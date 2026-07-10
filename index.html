@@ -1,0 +1,1431 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=Archivo+Expanded:wght@600;700;800;900&family=Spline+Sans+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{background:#F6F2EA;color:#17120F;font-family:'Archivo',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+  ::selection{background:#C8102E;color:#fff}
+  @keyframes lmpulse{0%,100%{opacity:1}50%{opacity:.35}}
+  @keyframes lmblink{0%,49%{opacity:1}50%,100%{opacity:.15}}
+  *::-webkit-scrollbar{height:8px;width:8px}
+  *::-webkit-scrollbar-thumb{background:#cbc4b6;border-radius:8px}
+  @media(max-width:820px){
+    .lm-twocol{grid-template-columns:1fr !important;gap:34px !important}
+    .lm-stack{grid-template-columns:1fr !important}
+    .lm-livegrid{grid-template-columns:1fr !important}
+    .lm-hidesm{display:none !important}
+    .lm-ordergrid{grid-template-columns:1fr !important}
+  }
+</style>
+</helmet>
+
+<div style="min-height:100vh;display:flex;flex-direction:column;background:#F6F2EA">
+
+  <!-- NAV -->
+  <header style="position:sticky;top:0;z-index:50;background:#17120F;color:#F6F2EA;border-bottom:3px solid #C8102E">
+    <div style="max-width:1200px;margin:0 auto;display:flex;align-items:center;gap:18px;padding:0 20px;height:64px">
+      <button onClick="{{ goInicio }}" style="display:flex;align-items:center;gap:11px;background:none;border:0;cursor:pointer;padding:0;color:inherit">
+        <span style="width:38px;height:38px;border-radius:50%;background:#C8102E;display:grid;place-items:center;font-family:'Archivo Expanded';font-weight:900;font-size:18px;color:#fff;flex:none">M</span>
+        <span style="display:flex;flex-direction:column;line-height:1;text-align:left">
+          <span style="font-family:'Archivo Expanded';font-weight:800;font-size:15px;letter-spacing:.04em">LIGA MEXICA</span>
+          <span style="font-size:9.5px;letter-spacing:.22em;color:#9a9085;font-weight:600;margin-top:3px">BÉISBOL INFANTIL Y JUVENIL</span>
+        </span>
+      </button>
+      <nav style="margin-left:auto;display:flex;align-items:center;gap:2px;overflow-x:auto;max-width:62vw">
+        <sc-for list="{{ navItems }}" as="item" hint-placeholder-count="5">
+          <button onClick="{{ item.go }}" style="{{ item.style }}">{{ item.label }}</button>
+        </sc-for>
+      </nav>
+      <button onClick="{{ goAnotador }}" style="flex:none;background:#C8102E;color:#fff;border:0;border-radius:3px;font-family:'Archivo';font-weight:800;font-size:12px;letter-spacing:.08em;padding:10px 16px;cursor:pointer;text-transform:uppercase">Anotador</button>
+    </div>
+  </header>
+
+  <!-- DIVISION SWITCHER (en todas las vistas) -->
+  <div style="position:sticky;top:64px;z-index:40;background:#F6F2EA;border-bottom:1px solid #E3DCCF">
+    <div style="max-width:1200px;margin:0 auto;padding:11px 20px;display:flex;align-items:center;gap:14px">
+      <span style="font-size:10px;letter-spacing:.18em;font-weight:800;color:#9A9387;flex:none;display:flex;align-items:center;gap:6px"><span style="width:6px;height:6px;border-radius:50%;background:#C8102E;animation:lmpulse 1.4s infinite"></span>DIVISIÓN</span>
+      <div style="display:flex;align-items:center;gap:8px;overflow-x:auto;padding:2px 0">
+        <sc-for list="{{ divPills }}" as="d" hint-placeholder-count="4">
+          <button onClick="{{ d.click }}" style="{{ d.style }}"><span style="width:6px;height:6px;border-radius:50%;background:{{ d.dotColor }};flex:none"></span>{{ d.short }} <span style="opacity:.7;font-weight:500;font-size:11px">· {{ d.cat }}</span></button>
+        </sc-for>
+      </div>
+    </div>
+  </div>
+
+  <main style="flex:1">
+
+    <!-- ===== INICIO ===== -->
+    <sc-if value="{{ isInicio }}" hint-placeholder-val="{{ true }}">
+    <div>
+      <!-- HERO -->
+      <section style="background:#17120F;color:#F6F2EA;position:relative;overflow:hidden">
+        <div style="position:absolute;right:-60px;top:-40px;font-family:'Archivo Expanded';font-weight:900;font-size:340px;line-height:.8;color:#1f1814;user-select:none;pointer-events:none">⚾</div>
+        <div style="max-width:1200px;margin:0 auto;padding:64px 20px 56px;position:relative">
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:26px">
+            <span style="width:30px;height:2px;background:#C8102E"></span>
+            <span style="font-size:11px;letter-spacing:.28em;font-weight:700;color:#C8102E">TEMPORADA 2026 · SUR DE LA CDMX</span>
+          </div>
+          <h1 style="font-family:'Archivo Expanded';font-weight:900;font-size:clamp(44px,8vw,104px);line-height:.92;letter-spacing:-.01em;margin:0;max-width:14ch">FORMAMOS CAMPEONES DENTRO Y FUERA DEL DIAMANTE</h1>
+          <p style="max-width:54ch;font-size:17px;line-height:1.55;color:#c7bfb3;margin:24px 0 0;font-weight:400">Asociación civil comprometida con la formación integral de la niñez y la juventud a través del béisbol. Entrena, juega y vive el béisbol en un lugar increíble.</p>
+          <div style="display:flex;flex-wrap:wrap;gap:12px;margin-top:34px">
+            <button onClick="{{ goVivo }}" style="background:#C8102E;color:#fff;border:0;border-radius:3px;font-family:'Archivo';font-weight:800;font-size:13px;letter-spacing:.06em;padding:14px 26px;cursor:pointer;text-transform:uppercase;display:inline-flex;align-items:center;gap:9px"><span style="width:8px;height:8px;border-radius:50%;background:#fff;animation:lmpulse 1.4s infinite"></span>Partido en vivo</button>
+            <button onClick="{{ goCalendario }}" style="background:transparent;color:#F6F2EA;border:1.5px solid #4a3f38;border-radius:3px;font-family:'Archivo';font-weight:700;font-size:13px;letter-spacing:.06em;padding:14px 26px;cursor:pointer;text-transform:uppercase">Ver calendario</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- FEATURED LIVE STRIP -->
+      <section style="max-width:1200px;margin:0 auto;padding:44px 20px 0">
+        <div style="display:flex;align-items:flex-end;justify-content:space-between;border-bottom:2px solid #17120F;padding-bottom:10px;margin-bottom:22px">
+          <div style="display:flex;flex-direction:column;gap:4px">
+            <h2 style="font-family:'Archivo Expanded';font-weight:800;font-size:clamp(20px,3vw,30px);margin:0;letter-spacing:-.01em">EN EL DIAMANTE AHORA</h2>
+            <span style="font-size:12px;font-weight:600;color:#9A9387">{{ curDivName }} · {{ miniCancha }}</span>
+          </div>
+          <span style="font-size:11px;letter-spacing:.2em;font-weight:700;color:#C8102E;display:flex;align-items:center;gap:7px"><span style="width:7px;height:7px;border-radius:50%;background:#C8102E;animation:lmpulse 1.4s infinite"></span>EN VIVO</span>
+        </div>
+        <button onClick="{{ goVivo }}" style="width:100%;text-align:left;cursor:pointer;background:#fff;border:1px solid #E3DCCF;border-radius:6px;padding:0;overflow:hidden;display:block">
+          <div style="display:flex;flex-wrap:wrap">
+            <div style="flex:1;min-width:260px;padding:24px 28px;display:flex;flex-direction:column;gap:18px">
+              <sc-for list="{{ liveMini }}" as="t" hint-placeholder-count="2">
+                <div style="display:flex;align-items:center;gap:14px">
+                  <span style="width:34px;height:34px;border-radius:4px;background:{{ t.color }};color:#fff;font-family:'Archivo';font-weight:800;font-size:12px;display:grid;place-items:center;flex:none">{{ t.abbr }}</span>
+                  <span style="font-family:'Archivo';font-weight:700;font-size:18px;flex:1">{{ t.name }}</span>
+                  <span style="font-family:'Spline Sans Mono';font-weight:700;font-size:30px">{{ t.runs }}</span>
+                </div>
+              </sc-for>
+            </div>
+            <div style="width:1px;background:#E3DCCF"></div>
+            <div style="flex:none;padding:24px 28px;display:flex;flex-direction:column;justify-content:center;gap:6px;min-width:150px;background:#FbF9F5">
+              <span style="font-size:11px;letter-spacing:.18em;font-weight:700;color:#9A9387">ENTRADA</span>
+              <span style="font-family:'Archivo Expanded';font-weight:800;font-size:26px;line-height:1">{{ miniInning }}</span>
+              <span style="font-size:12px;color:#6b6258;margin-top:4px">{{ miniCount }}</span>
+            </div>
+          </div>
+        </button>
+      </section>
+
+      <!-- NEXT MATCH + OTHER DIVISIONS -->
+      <section style="max-width:1200px;margin:0 auto;padding:36px 20px 0;display:grid;grid-template-columns:1fr 1fr;gap:40px" class="lm-twocol">
+        <!-- PARTIDO SIGUIENTE -->
+        <div>
+          <div style="display:flex;align-items:flex-end;justify-content:space-between;border-bottom:2px solid #17120F;padding-bottom:10px;margin-bottom:18px">
+            <h2 style="font-family:'Archivo Expanded';font-weight:800;font-size:clamp(18px,2.6vw,24px);margin:0;letter-spacing:-.01em">PARTIDO SIGUIENTE</h2>
+            <span style="font-size:11px;letter-spacing:.16em;font-weight:700;color:#9A9387">{{ curDivName }}</span>
+          </div>
+          <sc-if value="{{ nextGame }}" hint-placeholder-val="{{ true }}">
+          <button onClick="{{ nextGame.open }}" style="width:100%;text-align:left;cursor:pointer;background:#17120F;color:#F6F2EA;border:0;border-radius:6px;padding:22px 24px;display:block">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:18px">
+              <span style="font-size:10.5px;letter-spacing:.16em;font-weight:800;color:#C8102E">PRÓXIMO · {{ nextGame.day }}</span>
+              <span style="font-family:'Spline Sans Mono';font-size:12px;color:#9a9085;margin-left:auto">{{ nextGame.time }}</span>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:14px">
+              <div style="display:flex;align-items:center;gap:13px">
+                <span style="width:34px;height:34px;border-radius:5px;background:{{ nextGame.awColor }};color:#fff;font-family:'Archivo';font-weight:800;font-size:12px;display:grid;place-items:center;flex:none">{{ nextGame.awAbbr }}</span>
+                <span style="font-family:'Archivo';font-weight:700;font-size:17px;flex:1">{{ nextGame.awName }}</span>
+                <span style="font-family:'Spline Sans Mono';font-size:12px;color:#9a9085">{{ nextGame.awRec }}</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:13px">
+                <span style="width:34px;height:34px;border-radius:5px;background:{{ nextGame.hmColor }};color:#fff;font-family:'Archivo';font-weight:800;font-size:12px;display:grid;place-items:center;flex:none">{{ nextGame.hmAbbr }}</span>
+                <span style="font-family:'Archivo';font-weight:700;font-size:17px;flex:1">{{ nextGame.hmName }}</span>
+                <span style="font-family:'Spline Sans Mono';font-size:12px;color:#9a9085">{{ nextGame.hmRec }}</span>
+              </div>
+            </div>
+            <div style="margin-top:18px;padding-top:14px;border-top:1px solid #2a2320;font-size:12px;color:#9a9085;display:flex;align-items:center;gap:7px">📍 {{ nextGame.cancha }}</div>
+          </button>
+          </sc-if>
+        </div>
+
+        <!-- OTRAS DIVISIONES EN VIVO -->
+        <div>
+          <div style="display:flex;align-items:flex-end;justify-content:space-between;border-bottom:2px solid #17120F;padding-bottom:10px;margin-bottom:18px">
+            <h2 style="font-family:'Archivo Expanded';font-weight:800;font-size:clamp(18px,2.6vw,24px);margin:0;letter-spacing:-.01em">EN OTRAS CANCHAS</h2>
+            <span style="font-size:11px;letter-spacing:.16em;font-weight:700;color:#C8102E;display:flex;align-items:center;gap:6px"><span style="width:6px;height:6px;border-radius:50%;background:#C8102E;animation:lmpulse 1.4s infinite"></span>SIMULTÁNEO</span>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <sc-for list="{{ otherLive }}" as="o" hint-placeholder-count="3">
+              <button onClick="{{ o.click }}" style="width:100%;text-align:left;cursor:pointer;background:#fff;border:1px solid #E3DCCF;border-radius:6px;padding:14px 16px;display:flex;align-items:center;gap:14px">
+                <div style="display:flex;flex-direction:column;gap:3px;flex:none;width:96px">
+                  <span style="font-size:10px;letter-spacing:.1em;font-weight:800;color:#C8102E">{{ o.divTag }}</span>
+                  <span style="font-size:10.5px;color:#9A9387">{{ o.cancha }}</span>
+                </div>
+                <div style="flex:1;display:flex;flex-direction:column;gap:7px">
+                  <div style="display:flex;align-items:center;gap:9px">
+                    <span style="width:24px;height:24px;border-radius:4px;background:{{ o.awColor }};color:#fff;font-family:'Archivo';font-weight:800;font-size:9px;display:grid;place-items:center;flex:none">{{ o.awAbbr }}</span>
+                    <span style="font-family:'Spline Sans Mono';font-weight:700;font-size:16px;margin-left:auto">{{ o.awRuns }}</span>
+                  </div>
+                  <div style="display:flex;align-items:center;gap:9px">
+                    <span style="width:24px;height:24px;border-radius:4px;background:{{ o.hmColor }};color:#fff;font-family:'Archivo';font-weight:800;font-size:9px;display:grid;place-items:center;flex:none">{{ o.hmAbbr }}</span>
+                    <span style="font-family:'Spline Sans Mono';font-weight:700;font-size:16px;margin-left:auto">{{ o.hmRuns }}</span>
+                  </div>
+                </div>
+                <span style="flex:none;font-family:'Archivo Expanded';font-weight:800;font-size:15px;color:#17120F;width:36px;text-align:center">{{ o.inning }}</span>
+              </button>
+            </sc-for>
+          </div>
+        </div>
+      </section>
+      <section style="max-width:1200px;margin:0 auto;padding:44px 20px 64px;display:grid;grid-template-columns:1.3fr 1fr;gap:40px" class="lm-twocol">
+        <div>
+          <div style="display:flex;align-items:flex-end;justify-content:space-between;border-bottom:2px solid #17120F;padding-bottom:10px;margin-bottom:14px">
+            <h2 style="font-family:'Archivo Expanded';font-weight:800;font-size:22px;margin:0;letter-spacing:-.01em">POSICIONES</h2>
+            <button onClick="{{ goPosiciones }}" style="background:none;border:0;cursor:pointer;font-size:11px;letter-spacing:.12em;font-weight:700;color:#C8102E;text-transform:uppercase">Tabla completa →</button>
+          </div>
+          <sc-for list="{{ standings }}" as="row" hint-placeholder-count="6">
+            <div style="display:flex;align-items:center;gap:14px;padding:11px 4px;border-bottom:1px solid #E3DCCF">
+              <span style="font-family:'Spline Sans Mono';font-weight:600;font-size:13px;color:#9A9387;width:18px">{{ row.rank }}</span>
+              <span style="width:28px;height:28px;border-radius:4px;background:{{ row.color }};color:#fff;font-family:'Archivo';font-weight:800;font-size:11px;display:grid;place-items:center;flex:none">{{ row.abbr }}</span>
+              <span style="font-family:'Archivo';font-weight:600;font-size:15px;flex:1">{{ row.name }}</span>
+              <span style="font-family:'Spline Sans Mono';font-weight:600;font-size:14px">{{ row.record }}</span>
+              <span style="font-family:'Spline Sans Mono';font-weight:500;font-size:13px;color:#9A9387;width:46px;text-align:right">{{ row.pct }}</span>
+            </div>
+          </sc-for>
+        </div>
+        <div>
+          <div style="display:flex;align-items:flex-end;justify-content:space-between;border-bottom:2px solid #17120F;padding-bottom:10px;margin-bottom:14px">
+            <h2 style="font-family:'Archivo Expanded';font-weight:800;font-size:22px;margin:0;letter-spacing:-.01em">RESULTADOS</h2>
+            <button onClick="{{ goCalendario }}" style="background:none;border:0;cursor:pointer;font-size:11px;letter-spacing:.12em;font-weight:700;color:#C8102E;text-transform:uppercase">Todos →</button>
+          </div>
+          <sc-for list="{{ recentResults }}" as="g" hint-placeholder-count="4">
+            <button onClick="{{ g.open }}" style="width:100%;text-align:left;cursor:pointer;background:none;border:0;border-bottom:1px solid #E3DCCF;padding:11px 4px;display:flex;flex-direction:column;gap:6px">
+              <span style="font-size:10.5px;letter-spacing:.14em;font-weight:700;color:#9A9387">{{ g.date }} · FINAL</span>
+              <span style="display:flex;align-items:center;gap:10px;width:100%">
+                <span style="font-family:'Archivo';font-weight:{{ g.awWeight }};font-size:14px;flex:1">{{ g.away }}</span>
+                <span style="font-family:'Spline Sans Mono';font-weight:700;font-size:15px;color:{{ g.awColor }}">{{ g.awRuns }}</span>
+              </span>
+              <span style="display:flex;align-items:center;gap:10px;width:100%">
+                <span style="font-family:'Archivo';font-weight:{{ g.hmWeight }};font-size:14px;flex:1">{{ g.home }}</span>
+                <span style="font-family:'Spline Sans Mono';font-weight:700;font-size:15px;color:{{ g.hmColor }}">{{ g.hmRuns }}</span>
+              </span>
+            </button>
+          </sc-for>
+        </div>
+      </section>
+    </div>
+    </sc-if>
+
+    <!-- ===== EN VIVO (stub) ===== -->
+    <sc-if value="{{ isVivo }}" hint-placeholder-val="{{ true }}">
+    <div data-screen-label="En Vivo">
+      <!-- SCOREBOARD PANEL -->
+      <section style="background:#17120F;color:#F6F2EA">
+        <div style="max-width:1100px;margin:0 auto;padding:26px 20px 30px">
+          <div style="display:flex;align-items:center;gap:14px;margin-bottom:22px;flex-wrap:wrap">
+            <span style="display:inline-flex;align-items:center;gap:8px;background:#C8102E;color:#fff;font-size:11px;letter-spacing:.16em;font-weight:800;padding:6px 12px;border-radius:3px"><span style="width:7px;height:7px;border-radius:50%;background:#fff;animation:lmpulse 1.4s infinite"></span>EN VIVO</span>
+            <span style="font-size:12px;letter-spacing:.12em;color:#9a9085;font-weight:600">{{ vivoVenue }}</span>
+            <button onClick="{{ goAnotador }}" class="lm-hidesm" style="margin-left:auto;background:transparent;color:#F6F2EA;border:1.5px solid #4a3f38;border-radius:3px;font-family:'Archivo';font-weight:700;font-size:11px;letter-spacing:.08em;padding:8px 14px;cursor:pointer;text-transform:uppercase">Abrir anotador</button>
+          </div>
+
+          <!-- big runs + linescore -->
+          <div style="display:grid;grid-template-columns:1fr auto;gap:30px;align-items:center" class="lm-livegrid">
+            <div style="display:flex;flex-direction:column;gap:14px">
+              <sc-for list="{{ vivoTeams }}" as="t" hint-placeholder-count="2">
+                <div style="display:flex;align-items:center;gap:16px">
+                  <span style="width:44px;height:44px;border-radius:6px;background:{{ t.color }};color:#fff;font-family:'Archivo';font-weight:800;font-size:15px;display:grid;place-items:center;flex:none">{{ t.abbr }}</span>
+                  <div style="display:flex;flex-direction:column;line-height:1.05">
+                    <span style="font-family:'Archivo Expanded';font-weight:800;font-size:clamp(20px,3.4vw,30px)">{{ t.name }}</span>
+                    <span style="font-size:11px;letter-spacing:.08em;color:#9a9085;font-weight:600;margin-top:4px">{{ t.batIndicatorLabel }}</span>
+                  </div>
+                  <span style="margin-left:auto;font-family:'Spline Sans Mono';font-weight:700;font-size:clamp(38px,7vw,58px);line-height:.9;color:{{ t.runColor }}">{{ t.runs }}</span>
+                </div>
+              </sc-for>
+            </div>
+
+            <!-- line score table -->
+            <div style="overflow-x:auto;border-left:1px solid #2a2320;padding-left:24px" class="lm-hidesm">
+              <table style="border-collapse:collapse;font-family:'Spline Sans Mono'">
+                <thead>
+                  <tr>
+                    <th style="width:54px"></th>
+                    <sc-for list="{{ inningCols }}" as="c" hint-placeholder-count="9"><th style="width:26px;font-size:11px;font-weight:600;color:#9a9085;padding:0 0 8px;text-align:center">{{ c }}</th></sc-for>
+                    <th style="width:30px;font-size:11px;font-weight:700;color:#C8102E;padding:0 0 8px 8px;text-align:center">R</th>
+                    <th style="width:26px;font-size:11px;font-weight:700;color:#9a9085;padding:0 0 8px;text-align:center">H</th>
+                    <th style="width:26px;font-size:11px;font-weight:700;color:#9a9085;padding:0 0 8px;text-align:center">E</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <sc-for list="{{ vivoTeams }}" as="t" hint-placeholder-count="2">
+                    <tr style="border-top:1px solid #2a2320">
+                      <td style="font-family:'Archivo';font-weight:700;font-size:13px;padding:9px 6px 9px 0;color:#F6F2EA">{{ t.abbr }}</td>
+                      <sc-for list="{{ t.cells }}" as="cell" hint-placeholder-count="9"><td style="font-size:14px;font-weight:500;text-align:center;color:#d8d0c4;padding:9px 0">{{ cell }}</td></sc-for>
+                      <td style="font-size:15px;font-weight:700;text-align:center;color:#fff;padding:9px 0 9px 8px">{{ t.runs }}</td>
+                      <td style="font-size:14px;font-weight:500;text-align:center;color:#9a9085;padding:9px 0">{{ t.hits }}</td>
+                      <td style="font-size:14px;font-weight:500;text-align:center;color:#9a9085;padding:9px 0">{{ t.errors }}</td>
+                    </tr>
+                  </sc-for>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SITUATION + AT BAT -->
+      <section style="max-width:1100px;margin:0 auto;padding:38px 20px 0;display:grid;grid-template-columns:300px 1fr;gap:34px" class="lm-stack">
+        <!-- situation -->
+        <div>
+          <div style="font-size:11px;letter-spacing:.2em;font-weight:700;color:#C8102E;margin-bottom:14px">SITUACIÓN</div>
+          <div style="background:#fff;border:1px solid #E3DCCF;border-radius:6px;padding:24px;display:flex;flex-direction:column;align-items:center;gap:22px">
+            <div style="font-family:'Archivo Expanded';font-weight:800;font-size:24px">{{ vivoInningLabel }}</div>
+            <!-- diamond -->
+            <div style="position:relative;width:128px;height:128px">
+              <span style="position:absolute;left:50%;top:0;transform:translate(-50%,0) rotate(45deg);width:30px;height:30px;background:{{ base2Fill }};border:2px solid #17120F"></span>
+              <span style="position:absolute;left:0;top:50%;transform:translate(0,-50%) rotate(45deg);width:30px;height:30px;background:{{ base3Fill }};border:2px solid #17120F"></span>
+              <span style="position:absolute;right:0;top:50%;transform:translate(0,-50%) rotate(45deg);width:30px;height:30px;background:{{ base1Fill }};border:2px solid #17120F"></span>
+              <span style="position:absolute;left:50%;bottom:0;transform:translate(-50%,0) rotate(45deg);width:26px;height:26px;background:#17120F"></span>
+            </div>
+            <!-- count -->
+            <div style="display:flex;flex-direction:column;gap:9px;width:100%">
+              <div style="display:flex;align-items:center;gap:10px">
+                <span style="font-size:11px;letter-spacing:.1em;font-weight:700;color:#9A9387;width:54px">BOLAS</span>
+                <sc-for list="{{ ballDots }}" as="d" hint-placeholder-count="3"><span style="width:14px;height:14px;border-radius:50%;background:{{ d }};border:1.5px solid #17120F"></span></sc-for>
+              </div>
+              <div style="display:flex;align-items:center;gap:10px">
+                <span style="font-size:11px;letter-spacing:.1em;font-weight:700;color:#9A9387;width:54px">STRIKES</span>
+                <sc-for list="{{ strikeDots }}" as="d" hint-placeholder-count="2"><span style="width:14px;height:14px;border-radius:50%;background:{{ d }};border:1.5px solid #17120F"></span></sc-for>
+              </div>
+              <div style="display:flex;align-items:center;gap:10px">
+                <span style="font-size:11px;letter-spacing:.1em;font-weight:700;color:#9A9387;width:54px">OUTS</span>
+                <sc-for list="{{ outDots }}" as="d" hint-placeholder-count="2"><span style="width:14px;height:14px;border-radius:50%;background:{{ d }};border:1.5px solid #17120F"></span></sc-for>
+              </div>
+            </div>
+          </div>
+          <!-- pitcher -->
+          <div style="margin-top:18px;background:#fff;border:1px solid #E3DCCF;border-radius:6px;padding:18px">
+            <div style="font-size:10.5px;letter-spacing:.16em;font-weight:700;color:#9A9387;margin-bottom:8px">LANZANDO</div>
+            <div style="font-family:'Archivo';font-weight:700;font-size:16px">{{ pitcherName }}</div>
+            <div style="font-family:'Spline Sans Mono';font-size:12px;color:#6b6258;margin-top:6px">{{ pitcherLine }}</div>
+          </div>
+        </div>
+
+        <!-- at bat -->
+        <div>
+          <div style="font-size:11px;letter-spacing:.2em;font-weight:700;color:#C8102E;margin-bottom:14px">AL BATE · {{ battingTeamName }}</div>
+          <div style="background:#fff;border:1px solid #E3DCCF;border-radius:6px;padding:30px;border-left:5px solid {{ battingTeamColor }}">
+            <div style="display:flex;align-items:baseline;gap:14px;flex-wrap:wrap">
+              <span style="font-family:'Spline Sans Mono';font-weight:700;font-size:18px;color:#C8102E">#{{ curBatter.num }}</span>
+              <span style="font-family:'Archivo Expanded';font-weight:800;font-size:clamp(26px,4vw,38px);line-height:1">{{ curBatter.n }}</span>
+              <span style="font-size:13px;font-weight:700;color:#9A9387;letter-spacing:.06em">{{ curBatter.posLabel }}</span>
+            </div>
+            <div style="display:flex;flex-wrap:wrap;gap:0;margin-top:24px;border:1px solid #E3DCCF;border-radius:5px;overflow:hidden">
+              <sc-for list="{{ curBatterStats }}" as="s" hint-placeholder-count="4">
+                <div style="flex:1;min-width:80px;padding:14px 16px;border-right:1px solid #E3DCCF;display:flex;flex-direction:column;gap:5px">
+                  <span style="font-size:10px;letter-spacing:.12em;font-weight:700;color:#9A9387">{{ s.label }}</span>
+                  <span style="font-family:'Spline Sans Mono';font-weight:700;font-size:22px">{{ s.value }}</span>
+                </div>
+              </sc-for>
+            </div>
+            <div style="margin-top:18px;font-size:13px;color:#6b6258">En espera: <strong style="color:#17120F;font-weight:700">{{ onDeckName }}</strong></div>
+          </div>
+
+          <!-- batting orders -->
+          <div style="margin-top:32px;display:grid;grid-template-columns:1fr 1fr;gap:24px" class="lm-ordergrid">
+            <div>
+              <div style="display:flex;align-items:center;gap:9px;border-bottom:2px solid #17120F;padding-bottom:9px;margin-bottom:6px">
+                <span style="width:22px;height:22px;border-radius:4px;background:{{ awColor }};color:#fff;font-family:'Archivo';font-weight:800;font-size:10px;display:grid;place-items:center">{{ awAbbr }}</span>
+                <span style="font-family:'Archivo';font-weight:800;font-size:14px;letter-spacing:.02em">{{ awName }}</span>
+              </div>
+              <sc-for list="{{ orderAway }}" as="p" hint-placeholder-count="9">
+                <div style="display:flex;align-items:center;gap:10px;padding:8px 8px;border-bottom:1px solid #E3DCCF;background:{{ p.bg }}">
+                  <span style="font-family:'Spline Sans Mono';font-weight:600;font-size:12px;color:#9A9387;width:14px">{{ p.order }}</span>
+                  <span style="font-family:'Archivo';font-weight:{{ p.weight }};font-size:13px;flex:1">{{ p.n }}</span>
+                  <span style="font-size:10px;font-weight:700;color:#9A9387;width:24px">{{ p.pos }}</span>
+                  <span style="font-family:'Spline Sans Mono';font-size:12px;color:#6b6258;width:34px;text-align:right">{{ p.avg }}</span>
+                </div>
+              </sc-for>
+            </div>
+            <div>
+              <div style="display:flex;align-items:center;gap:9px;border-bottom:2px solid #17120F;padding-bottom:9px;margin-bottom:6px">
+                <span style="width:22px;height:22px;border-radius:4px;background:{{ hmColor }};color:#fff;font-family:'Archivo';font-weight:800;font-size:10px;display:grid;place-items:center">{{ hmAbbr }}</span>
+                <span style="font-family:'Archivo';font-weight:800;font-size:14px;letter-spacing:.02em">{{ hmName }}</span>
+              </div>
+              <sc-for list="{{ orderHome }}" as="p" hint-placeholder-count="9">
+                <div style="display:flex;align-items:center;gap:10px;padding:8px 8px;border-bottom:1px solid #E3DCCF;background:{{ p.bg }}">
+                  <span style="font-family:'Spline Sans Mono';font-weight:600;font-size:12px;color:#9A9387;width:14px">{{ p.order }}</span>
+                  <span style="font-family:'Archivo';font-weight:{{ p.weight }};font-size:13px;flex:1">{{ p.n }}</span>
+                  <span style="font-size:10px;font-weight:700;color:#9A9387;width:24px">{{ p.pos }}</span>
+                  <span style="font-family:'Spline Sans Mono';font-size:12px;color:#6b6258;width:34px;text-align:right">{{ p.avg }}</span>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+      </section>
+      <div style="height:56px"></div>
+    </div>
+    </sc-if>
+    <!-- ===== CALENDARIO (stub) ===== -->
+    <sc-if value="{{ isCalendario }}" hint-placeholder-val="{{ true }}">
+    <div data-screen-label="Calendario">
+      <section style="max-width:1000px;margin:0 auto;padding:48px 20px 64px">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px">
+          <span style="width:30px;height:2px;background:#C8102E"></span>
+          <span style="font-size:11px;letter-spacing:.24em;font-weight:700;color:#C8102E">JORNADAS · TEMPORADA 2026</span>
+        </div>
+        <h1 style="font-family:'Archivo Expanded';font-weight:900;font-size:clamp(34px,6vw,56px);margin:0 0 36px;letter-spacing:-.01em">CALENDARIO</h1>
+
+        <sc-for list="{{ scheduleDays }}" as="d" hint-placeholder-count="4">
+          <div style="margin-bottom:34px">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
+              <span style="font-family:'Archivo';font-weight:800;font-size:14px;letter-spacing:.1em;color:{{ d.dayColor }}">{{ d.day }}</span>
+              <span style="flex:1;height:1px;background:#E3DCCF"></span>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px" class="lm-stack">
+              <sc-for list="{{ d.games }}" as="g" hint-placeholder-count="2">
+                <button onClick="{{ g.open }}" style="text-align:left;cursor:pointer;background:#fff;border:1px solid #E3DCCF;border-radius:6px;padding:18px 20px;display:flex;flex-direction:column;gap:14px;border-left:4px solid {{ g.accent }}">
+                  <div style="display:flex;align-items:center;justify-content:space-between">
+                    <span style="font-size:10px;letter-spacing:.14em;font-weight:800;color:{{ g.statusColor }};display:flex;align-items:center;gap:6px">{{ g.statusDot }}{{ g.statusLabel }}</span>
+                    <span style="font-family:'Spline Sans Mono';font-size:11px;color:#9A9387">{{ g.time }}</span>
+                  </div>
+                  <div style="display:flex;flex-direction:column;gap:9px">
+                    <div style="display:flex;align-items:center;gap:11px">
+                      <span style="width:28px;height:28px;border-radius:4px;background:{{ g.awColor }};color:#fff;font-family:'Archivo';font-weight:800;font-size:10px;display:grid;place-items:center;flex:none">{{ g.awAbbr }}</span>
+                      <span style="font-family:'Archivo';font-weight:{{ g.awWeight }};font-size:15px;flex:1">{{ g.awName }}</span>
+                      <span style="font-family:'Spline Sans Mono';font-weight:700;font-size:18px;color:{{ g.awScoreColor }}">{{ g.aR }}</span>
+                    </div>
+                    <div style="display:flex;align-items:center;gap:11px">
+                      <span style="width:28px;height:28px;border-radius:4px;background:{{ g.hmColor }};color:#fff;font-family:'Archivo';font-weight:800;font-size:10px;display:grid;place-items:center;flex:none">{{ g.hmAbbr }}</span>
+                      <span style="font-family:'Archivo';font-weight:{{ g.hmWeight }};font-size:15px;flex:1">{{ g.hmName }}</span>
+                      <span style="font-family:'Spline Sans Mono';font-weight:700;font-size:18px;color:{{ g.hmScoreColor }}">{{ g.hR }}</span>
+                    </div>
+                  </div>
+                </button>
+              </sc-for>
+            </div>
+          </div>
+        </sc-for>
+      </section>
+    </div>
+    </sc-if>
+    <!-- ===== POSICIONES (stub) ===== -->
+    <sc-if value="{{ isPosiciones }}" hint-placeholder-val="{{ true }}">
+    <div data-screen-label="Posiciones">
+      <section style="max-width:1000px;margin:0 auto;padding:48px 20px 64px">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px">
+          <span style="width:30px;height:2px;background:#C8102E"></span>
+          <span style="font-size:11px;letter-spacing:.24em;font-weight:700;color:#C8102E">TEMPORADA 2026</span>
+        </div>
+        <h1 style="font-family:'Archivo Expanded';font-weight:900;font-size:clamp(34px,6vw,56px);margin:0 0 32px;letter-spacing:-.01em">TABLA DE POSICIONES</h1>
+
+        <div style="background:#fff;border:1px solid #E3DCCF;border-radius:8px;overflow:hidden">
+          <div style="overflow-x:auto">
+            <table style="border-collapse:collapse;width:100%;min-width:680px">
+              <thead>
+                <tr style="background:#17120F;color:#F6F2EA">
+                  <th style="text-align:left;font-size:10px;letter-spacing:.12em;font-weight:700;padding:13px 14px;color:#9a9085">#</th>
+                  <th style="text-align:left;font-size:10px;letter-spacing:.12em;font-weight:700;padding:13px 14px;color:#9a9085">EQUIPO</th>
+                  <th style="font-size:10px;letter-spacing:.1em;font-weight:700;padding:13px 8px;text-align:center;color:#9a9085">JJ</th>
+                  <th style="font-size:10px;letter-spacing:.1em;font-weight:700;padding:13px 8px;text-align:center;color:#9a9085">G</th>
+                  <th style="font-size:10px;letter-spacing:.1em;font-weight:700;padding:13px 8px;text-align:center;color:#9a9085">P</th>
+                  <th style="font-size:10px;letter-spacing:.1em;font-weight:700;padding:13px 8px;text-align:center;color:#C8102E">PCT</th>
+                  <th style="font-size:10px;letter-spacing:.1em;font-weight:700;padding:13px 8px;text-align:center;color:#9a9085">JV</th>
+                  <th style="font-size:10px;letter-spacing:.1em;font-weight:700;padding:13px 8px;text-align:center;color:#9a9085">CF</th>
+                  <th style="font-size:10px;letter-spacing:.1em;font-weight:700;padding:13px 8px;text-align:center;color:#9a9085">CC</th>
+                  <th style="font-size:10px;letter-spacing:.1em;font-weight:700;padding:13px 8px;text-align:center;color:#9a9085">DIF</th>
+                  <th style="font-size:10px;letter-spacing:.1em;font-weight:700;padding:13px 14px;text-align:center;color:#9a9085">RACHA</th>
+                </tr>
+              </thead>
+              <tbody>
+                <sc-for list="{{ standings }}" as="r" hint-placeholder-count="6">
+                  <tr onClick="{{ r.open }}" style="cursor:pointer;border-bottom:1px solid #EFE9DD;background:{{ r.rowBg }}">
+                    <td style="padding:14px 14px;font-family:'Spline Sans Mono';font-weight:700;font-size:14px;color:{{ r.rankColor }}">{{ r.rank }}</td>
+                    <td style="padding:14px 14px">
+                      <span style="display:flex;align-items:center;gap:11px">
+                        <span style="width:30px;height:30px;border-radius:5px;background:{{ r.color }};color:#fff;font-family:'Archivo';font-weight:800;font-size:11px;display:grid;place-items:center;flex:none">{{ r.abbr }}</span>
+                        <span style="display:flex;flex-direction:column;line-height:1.1">
+                          <span style="font-family:'Archivo';font-weight:700;font-size:15px">{{ r.name }}</span>
+                          <span style="font-size:11px;color:#9A9387;margin-top:2px">{{ r.city }}</span>
+                        </span>
+                      </span>
+                    </td>
+                    <td style="text-align:center;font-family:'Spline Sans Mono';font-size:14px;color:#6b6258">{{ r.gp }}</td>
+                    <td style="text-align:center;font-family:'Spline Sans Mono';font-weight:700;font-size:14px">{{ r.w }}</td>
+                    <td style="text-align:center;font-family:'Spline Sans Mono';font-size:14px;color:#6b6258">{{ r.l }}</td>
+                    <td style="text-align:center;font-family:'Spline Sans Mono';font-weight:700;font-size:14px;color:#C8102E">{{ r.pct }}</td>
+                    <td style="text-align:center;font-family:'Spline Sans Mono';font-size:14px;color:#6b6258">{{ r.gb }}</td>
+                    <td style="text-align:center;font-family:'Spline Sans Mono';font-size:14px;color:#6b6258">{{ r.rf }}</td>
+                    <td style="text-align:center;font-family:'Spline Sans Mono';font-size:14px;color:#6b6258">{{ r.ra }}</td>
+                    <td style="text-align:center;font-family:'Spline Sans Mono';font-size:14px;color:#6b6258">{{ r.dif }}</td>
+                    <td style="text-align:center;font-family:'Spline Sans Mono';font-weight:700;font-size:13px;color:{{ r.streakColor }}">{{ r.streak }}</td>
+                  </tr>
+                </sc-for>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:18px;margin-top:16px;font-size:11px;color:#9A9387">
+          <span><strong style="color:#6b6258">JJ</strong> Juegos jugados</span>
+          <span><strong style="color:#6b6258">PCT</strong> Porcentaje de ganados</span>
+          <span><strong style="color:#6b6258">JV</strong> Juegos por detrás</span>
+          <span><strong style="color:#6b6258">CF/CC</strong> Carreras a favor / en contra</span>
+        </div>
+      </section>
+    </div>
+    </sc-if>
+    <!-- ===== EQUIPOS (stub) ===== -->
+    <sc-if value="{{ isEquipos }}" hint-placeholder-val="{{ true }}">
+    <div data-screen-label="Equipos">
+
+      <!-- ===== TEAM PICKER GRID ===== -->
+      <sc-if value="{{ showTeamGrid }}" hint-placeholder-val="{{ true }}">
+      <section style="max-width:1000px;margin:0 auto;padding:48px 20px 64px">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px">
+          <span style="width:30px;height:2px;background:#C8102E"></span>
+          <span style="font-size:11px;letter-spacing:.24em;font-weight:700;color:#C8102E">TEMPORADA 2026 · {{ teamCount }} EQUIPOS</span>
+        </div>
+        <h1 style="font-family:'Archivo Expanded';font-weight:900;font-size:clamp(34px,6vw,56px);margin:0 0 8px;letter-spacing:-.01em">EQUIPOS</h1>
+        <p style="font-size:14px;color:#6b6258;margin:0 0 32px;max-width:52ch">Selecciona un equipo para ver su plantilla, estadísticas y la ficha de cada jugador.</p>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:16px">
+          <sc-for list="{{ teamCards }}" as="t" hint-placeholder-count="6">
+            <button onClick="{{ t.open }}" style="text-align:left;cursor:pointer;background:#fff;border:1px solid #E3DCCF;border-radius:8px;padding:0;overflow:hidden;display:flex;flex-direction:column">
+              <div style="background:{{ t.color }};color:#fff;padding:18px 18px 16px;position:relative;overflow:hidden">
+                <span style="position:absolute;right:-14px;bottom:-30px;font-family:'Archivo Expanded';font-weight:900;font-size:96px;line-height:.7;opacity:.16;user-select:none">{{ t.abbr }}</span>
+                <span style="font-family:'Spline Sans Mono';font-size:11px;font-weight:600;opacity:.85;position:relative">{{ t.rankLabel }} LUGAR</span>
+                <div style="font-family:'Archivo Expanded';font-weight:800;font-size:22px;line-height:1.05;margin-top:8px;position:relative">{{ t.name }}</div>
+                <div style="font-size:11.5px;opacity:.85;margin-top:4px;position:relative">{{ t.city }}</div>
+              </div>
+              <div style="display:flex;align-items:center;gap:0;padding:0">
+                <div style="flex:1;padding:13px 16px;border-right:1px solid #EFE9DD;display:flex;flex-direction:column;gap:3px">
+                  <span style="font-size:9.5px;letter-spacing:.1em;font-weight:700;color:#9A9387">RÉCORD</span>
+                  <span style="font-family:'Spline Sans Mono';font-weight:700;font-size:16px">{{ t.record }}</span>
+                </div>
+                <div style="flex:1;padding:13px 16px;display:flex;flex-direction:column;gap:3px">
+                  <span style="font-size:9.5px;letter-spacing:.1em;font-weight:700;color:#9A9387">PCT</span>
+                  <span style="font-family:'Spline Sans Mono';font-weight:700;font-size:16px;color:#C8102E">{{ t.pct }}</span>
+                </div>
+                <span style="padding:0 18px;font-size:18px;color:#C8102E;font-weight:700">→</span>
+              </div>
+            </button>
+          </sc-for>
+        </div>
+      </section>
+      </sc-if>
+
+      <!-- ===== TEAM DETAIL ===== -->
+      <sc-if value="{{ showTeamDetail }}" hint-placeholder-val="{{ false }}">
+      <div>
+      <!-- TEAM HEADER -->
+      <section style="background:{{ teamHeader.color }};color:#fff;position:relative;overflow:hidden">
+        <div style="position:absolute;right:-30px;bottom:-90px;font-family:'Archivo Expanded';font-weight:900;font-size:300px;line-height:.7;opacity:.13;user-select:none">{{ teamHeader.abbr }}</div>
+        <div style="max-width:1000px;margin:0 auto;padding:26px 20px 38px;position:relative">
+          <button onClick="{{ backToTeams }}" style="background:rgba(255,255,255,.15);color:#fff;border:0;border-radius:5px;font-family:'Archivo';font-weight:700;font-size:12px;letter-spacing:.04em;padding:8px 14px;cursor:pointer;margin-bottom:18px">← Todos los equipos</button>
+          <div style="font-size:11px;letter-spacing:.22em;font-weight:700;opacity:.85;margin-bottom:14px">CLUB · {{ teamHeader.city }}</div>
+          <h1 style="font-family:'Archivo Expanded';font-weight:900;font-size:clamp(40px,7vw,72px);margin:0;line-height:.92;letter-spacing:-.01em">{{ teamHeader.name }}</h1>
+          <div style="display:flex;flex-wrap:wrap;gap:34px;margin-top:28px">
+            <div style="display:flex;flex-direction:column"><span style="font-size:11px;letter-spacing:.14em;opacity:.8;font-weight:600">POSICIÓN</span><span style="font-family:'Spline Sans Mono';font-weight:700;font-size:30px;margin-top:4px">{{ teamHeader.rank }}º</span></div>
+            <div style="display:flex;flex-direction:column"><span style="font-size:11px;letter-spacing:.14em;opacity:.8;font-weight:600">RÉCORD</span><span style="font-family:'Spline Sans Mono';font-weight:700;font-size:30px;margin-top:4px">{{ teamHeader.record }}</span></div>
+            <div style="display:flex;flex-direction:column"><span style="font-size:11px;letter-spacing:.14em;opacity:.8;font-weight:600">PCT</span><span style="font-family:'Spline Sans Mono';font-weight:700;font-size:30px;margin-top:4px">{{ teamHeader.pct }}</span></div>
+            <div style="display:flex;flex-direction:column"><span style="font-size:11px;letter-spacing:.14em;opacity:.8;font-weight:600">CF / CC</span><span style="font-family:'Spline Sans Mono';font-weight:700;font-size:30px;margin-top:4px">{{ teamHeader.rf }}/{{ teamHeader.ra }}</span></div>
+          </div>
+        </div>
+      </section>
+
+      <section style="max-width:1000px;margin:0 auto;padding:40px 20px 64px;display:grid;grid-template-columns:1fr 1.1fr;gap:40px" class="lm-stack">
+        <!-- ROSTER -->
+        <div>
+          <div style="border-bottom:2px solid #17120F;padding-bottom:9px;margin-bottom:6px">
+            <h2 style="font-family:'Archivo Expanded';font-weight:800;font-size:20px;margin:0;letter-spacing:-.01em">ROSTER</h2>
+          </div>
+          <sc-for list="{{ roster }}" as="p" hint-placeholder-count="10">
+            <button onClick="{{ p.click }}" style="width:100%;text-align:left;cursor:pointer;border:0;border-bottom:1px solid #E3DCCF;background:{{ p.bg }};display:flex;align-items:center;gap:13px;padding:11px 12px;border-left:3px solid {{ p.bar }}">
+              <span style="font-family:'Spline Sans Mono';font-weight:700;font-size:14px;color:#C8102E;width:30px">{{ p.num }}</span>
+              <span style="font-family:'Archivo';font-weight:{{ p.weight }};font-size:15px;flex:1">{{ p.n }}</span>
+              <span style="font-size:10px;font-weight:700;color:#9A9387;width:26px">{{ p.pos }}</span>
+              <span style="font-family:'Spline Sans Mono';font-size:13px;color:#6b6258;width:38px;text-align:right">{{ p.avg }}</span>
+            </button>
+          </sc-for>
+        </div>
+
+        <!-- PLAYER DETAIL -->
+        <div>
+          <div style="border-bottom:2px solid #17120F;padding-bottom:9px;margin-bottom:18px">
+            <h2 style="font-family:'Archivo Expanded';font-weight:800;font-size:20px;margin:0;letter-spacing:-.01em">FICHA DEL JUGADOR</h2>
+          </div>
+          <div style="background:#fff;border:1px solid #E3DCCF;border-radius:8px;overflow:hidden">
+            <div style="background:#17120F;color:#F6F2EA;padding:24px 26px;display:flex;align-items:center;gap:18px;border-left:6px solid {{ selectedPlayer.color }}">
+              <span style="font-family:'Spline Sans Mono';font-weight:700;font-size:42px;color:#C8102E;line-height:1">{{ selectedPlayer.num }}</span>
+              <div style="display:flex;flex-direction:column;line-height:1.1">
+                <span style="font-family:'Archivo Expanded';font-weight:800;font-size:clamp(22px,3.4vw,30px)">{{ selectedPlayer.n }}</span>
+                <span style="font-size:12px;color:#9a9085;margin-top:6px;font-weight:600">{{ selectedPlayer.posLabel }} · {{ selectedPlayer.teamName }}</span>
+                <span style="font-size:11px;color:#7c736a;margin-top:3px">Batea: {{ selectedPlayer.bat }} · {{ selectedPlayer.age }} años</span>
+              </div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:0">
+              <sc-for list="{{ selectedPlayer.stats }}" as="s" hint-placeholder-count="6">
+                <div style="padding:18px 16px;border-bottom:1px solid #E3DCCF;border-right:1px solid #E3DCCF;display:flex;flex-direction:column;gap:5px">
+                  <span style="font-size:10px;letter-spacing:.12em;font-weight:700;color:#9A9387">{{ s.label }}</span>
+                  <span style="font-family:'Spline Sans Mono';font-weight:700;font-size:22px">{{ s.value }}</span>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+
+          <sc-if value="{{ selectedPlayer.hasLog }}" hint-placeholder-val="{{ true }}">
+            <div style="margin-top:24px">
+              <div style="font-size:11px;letter-spacing:.18em;font-weight:700;color:#C8102E;margin-bottom:10px">ÚLTIMOS JUEGOS</div>
+              <div style="background:#fff;border:1px solid #E3DCCF;border-radius:6px;overflow:hidden">
+                <div style="display:flex;background:#FBF9F5;border-bottom:1px solid #E3DCCF;padding:9px 14px">
+                  <span style="flex:1;font-size:10px;letter-spacing:.1em;font-weight:700;color:#9A9387">FECHA</span>
+                  <span style="width:60px;font-size:10px;letter-spacing:.1em;font-weight:700;color:#9A9387">RIVAL</span>
+                  <span style="width:34px;text-align:center;font-size:10px;font-weight:700;color:#9A9387">AB</span>
+                  <span style="width:34px;text-align:center;font-size:10px;font-weight:700;color:#9A9387">H</span>
+                  <span style="width:34px;text-align:center;font-size:10px;font-weight:700;color:#9A9387">HR</span>
+                  <span style="width:34px;text-align:center;font-size:10px;font-weight:700;color:#9A9387">CI</span>
+                </div>
+                <sc-for list="{{ selectedPlayer.log }}" as="g" hint-placeholder-count="5">
+                  <div style="display:flex;align-items:center;padding:11px 14px;border-bottom:1px solid #EFE9DD">
+                    <span style="flex:1;font-family:'Spline Sans Mono';font-size:13px;color:#6b6258">{{ g.date }}</span>
+                    <span style="width:60px;font-family:'Archivo';font-weight:600;font-size:13px">{{ g.opp }}</span>
+                    <span style="width:34px;text-align:center;font-family:'Spline Sans Mono';font-size:13px">{{ g.ab }}</span>
+                    <span style="width:34px;text-align:center;font-family:'Spline Sans Mono';font-weight:700;font-size:13px">{{ g.h }}</span>
+                    <span style="width:34px;text-align:center;font-family:'Spline Sans Mono';font-size:13px">{{ g.hr }}</span>
+                    <span style="width:34px;text-align:center;font-family:'Spline Sans Mono';font-size:13px">{{ g.rbi }}</span>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+          </sc-if>
+        </div>
+      </section>
+      </div>
+      </sc-if>
+    </div>
+    </sc-if>
+    <!-- ===== RESUMEN (stub) ===== -->
+    <sc-if value="{{ isResumen }}" hint-placeholder-val="{{ true }}">
+    <div data-screen-label="Resumen">
+      <!-- FINAL HEADER -->
+      <section style="background:#17120F;color:#F6F2EA">
+        <div style="max-width:1000px;margin:0 auto;padding:30px 20px 34px">
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:22px">
+            <span style="background:#F6F2EA;color:#17120F;font-size:11px;letter-spacing:.14em;font-weight:800;padding:5px 11px;border-radius:3px">FINAL</span>
+            <span style="font-size:12px;letter-spacing:.06em;color:#9a9085;font-weight:600">{{ boxHeader.date }}</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:24px;flex-wrap:wrap">
+            <div style="display:flex;align-items:center;gap:16px;flex:1;min-width:220px">
+              <span style="width:42px;height:42px;border-radius:6px;background:{{ boxHeader.awColor }};color:#fff;font-family:'Archivo';font-weight:800;font-size:14px;display:grid;place-items:center">{{ boxHeader.awAbbr }}</span>
+              <span style="font-family:'Archivo Expanded';font-weight:800;font-size:clamp(20px,3.2vw,28px);flex:1">{{ boxHeader.awName }}</span>
+              <span style="font-family:'Spline Sans Mono';font-weight:700;font-size:46px;color:{{ boxHeader.awWin }}">{{ boxHeader.awRuns }}</span>
+            </div>
+          </div>
+          <div style="height:1px;background:#2a2320;margin:14px 0"></div>
+          <div style="display:flex;align-items:center;gap:24px;flex-wrap:wrap">
+            <div style="display:flex;align-items:center;gap:16px;flex:1;min-width:220px">
+              <span style="width:42px;height:42px;border-radius:6px;background:{{ boxHeader.hmColor }};color:#fff;font-family:'Archivo';font-weight:800;font-size:14px;display:grid;place-items:center">{{ boxHeader.hmAbbr }}</span>
+              <span style="font-family:'Archivo Expanded';font-weight:800;font-size:clamp(20px,3.2vw,28px);flex:1">{{ boxHeader.hmName }}</span>
+              <span style="font-family:'Spline Sans Mono';font-weight:700;font-size:46px">{{ boxHeader.hmRuns }}</span>
+            </div>
+          </div>
+          <div style="font-size:12px;color:#7c736a;margin-top:18px">📍 {{ boxHeader.venue }}</div>
+        </div>
+      </section>
+
+      <section style="max-width:1000px;margin:0 auto;padding:36px 20px 64px">
+        <!-- LINE SCORE -->
+        <div style="background:#fff;border:1px solid #E3DCCF;border-radius:8px;overflow-x:auto;margin-bottom:34px">
+          <table style="border-collapse:collapse;width:100%;min-width:560px">
+            <thead>
+              <tr style="border-bottom:2px solid #17120F">
+                <th style="text-align:left;font-size:11px;font-weight:700;color:#9A9387;padding:13px 16px"></th>
+                <sc-for list="{{ boxInnings }}" as="c" hint-placeholder-count="9"><th style="font-family:'Spline Sans Mono';font-size:12px;font-weight:600;color:#9A9387;padding:13px 6px;text-align:center;width:30px">{{ c }}</th></sc-for>
+                <th style="font-family:'Spline Sans Mono';font-size:12px;font-weight:700;color:#C8102E;padding:13px 8px;text-align:center;width:34px;border-left:1px solid #E3DCCF">R</th>
+                <th style="font-family:'Spline Sans Mono';font-size:12px;font-weight:700;color:#9A9387;padding:13px 6px;text-align:center;width:30px">H</th>
+                <th style="font-family:'Spline Sans Mono';font-size:12px;font-weight:700;color:#9A9387;padding:13px 6px;text-align:center;width:30px">E</th>
+              </tr>
+            </thead>
+            <tbody>
+              <sc-for list="{{ boxLine }}" as="t" hint-placeholder-count="2">
+                <tr style="border-bottom:1px solid #EFE9DD">
+                  <td style="padding:13px 16px;display:flex;align-items:center;gap:10px">
+                    <span style="width:26px;height:26px;border-radius:4px;background:{{ t.color }};color:#fff;font-family:'Archivo';font-weight:800;font-size:10px;display:grid;place-items:center">{{ t.abbr }}</span>
+                    <span style="font-family:'Archivo';font-weight:{{ t.win }};font-size:14px">{{ t.name }}</span>
+                  </td>
+                  <sc-for list="{{ t.cells }}" as="cell" hint-placeholder-count="9"><td style="font-family:'Spline Sans Mono';font-size:14px;text-align:center;color:#6b6258;padding:13px 6px">{{ cell }}</td></sc-for>
+                  <td style="font-family:'Spline Sans Mono';font-weight:700;font-size:16px;text-align:center;padding:13px 8px;border-left:1px solid #E3DCCF">{{ t.runs }}</td>
+                  <td style="font-family:'Spline Sans Mono';font-size:14px;text-align:center;color:#6b6258;padding:13px 6px">{{ t.hits }}</td>
+                  <td style="font-family:'Spline Sans Mono';font-size:14px;text-align:center;color:#6b6258;padding:13px 6px">{{ t.errors }}</td>
+                </tr>
+              </sc-for>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- BATTING BOX -->
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
+          <span style="width:8px;height:20px;background:#C8102E"></span>
+          <h2 style="font-family:'Archivo Expanded';font-weight:800;font-size:19px;margin:0;letter-spacing:-.01em">BATEO · {{ boxTeamName }}</h2>
+        </div>
+        <div style="background:#fff;border:1px solid #E3DCCF;border-radius:8px;overflow-x:auto;margin-bottom:34px">
+          <table style="border-collapse:collapse;width:100%;min-width:560px">
+            <thead>
+              <tr style="background:#FBF9F5;border-bottom:1px solid #E3DCCF">
+                <th style="text-align:left;font-size:10px;letter-spacing:.1em;font-weight:700;color:#9A9387;padding:11px 16px">JUGADOR</th>
+                <th style="font-size:10px;font-weight:700;color:#9A9387;padding:11px 8px;text-align:center">AB</th>
+                <th style="font-size:10px;font-weight:700;color:#9A9387;padding:11px 8px;text-align:center">C</th>
+                <th style="font-size:10px;font-weight:700;color:#9A9387;padding:11px 8px;text-align:center">H</th>
+                <th style="font-size:10px;font-weight:700;color:#9A9387;padding:11px 8px;text-align:center">CI</th>
+                <th style="font-size:10px;font-weight:700;color:#9A9387;padding:11px 8px;text-align:center">BB</th>
+                <th style="font-size:10px;font-weight:700;color:#9A9387;padding:11px 8px;text-align:center">K</th>
+                <th style="font-size:10px;font-weight:700;color:#C8102E;padding:11px 14px;text-align:center">AVG</th>
+              </tr>
+            </thead>
+            <tbody>
+              <sc-for list="{{ boxBatters }}" as="b" hint-placeholder-count="9">
+                <tr style="border-bottom:1px solid #EFE9DD">
+                  <td style="padding:10px 16px"><span style="font-family:'Archivo';font-weight:600;font-size:14px">{{ b.n }}</span> <span style="font-size:11px;color:#9A9387;font-weight:700">{{ b.pos }}</span></td>
+                  <td style="font-family:'Spline Sans Mono';font-size:13px;text-align:center;color:#6b6258">{{ b.ab }}</td>
+                  <td style="font-family:'Spline Sans Mono';font-size:13px;text-align:center;color:#6b6258">{{ b.r }}</td>
+                  <td style="font-family:'Spline Sans Mono';font-weight:700;font-size:13px;text-align:center">{{ b.h }}</td>
+                  <td style="font-family:'Spline Sans Mono';font-size:13px;text-align:center;color:#6b6258">{{ b.rbi }}</td>
+                  <td style="font-family:'Spline Sans Mono';font-size:13px;text-align:center;color:#6b6258">{{ b.bb }}</td>
+                  <td style="font-family:'Spline Sans Mono';font-size:13px;text-align:center;color:#6b6258">{{ b.k }}</td>
+                  <td style="font-family:'Spline Sans Mono';font-size:13px;text-align:center;color:#17120F;padding-right:14px">{{ b.avg }}</td>
+                </tr>
+              </sc-for>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- PITCHING BOX -->
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
+          <span style="width:8px;height:20px;background:#C8102E"></span>
+          <h2 style="font-family:'Archivo Expanded';font-weight:800;font-size:19px;margin:0;letter-spacing:-.01em">PITCHEO · {{ boxTeamName }}</h2>
+        </div>
+        <div style="background:#fff;border:1px solid #E3DCCF;border-radius:8px;overflow-x:auto">
+          <table style="border-collapse:collapse;width:100%;min-width:520px">
+            <thead>
+              <tr style="background:#FBF9F5;border-bottom:1px solid #E3DCCF">
+                <th style="text-align:left;font-size:10px;letter-spacing:.1em;font-weight:700;color:#9A9387;padding:11px 16px">LANZADOR</th>
+                <th style="font-size:10px;font-weight:700;color:#9A9387;padding:11px 8px;text-align:center">IP</th>
+                <th style="font-size:10px;font-weight:700;color:#9A9387;padding:11px 8px;text-align:center">H</th>
+                <th style="font-size:10px;font-weight:700;color:#9A9387;padding:11px 8px;text-align:center">C</th>
+                <th style="font-size:10px;font-weight:700;color:#9A9387;padding:11px 8px;text-align:center">CL</th>
+                <th style="font-size:10px;font-weight:700;color:#9A9387;padding:11px 8px;text-align:center">BB</th>
+                <th style="font-size:10px;font-weight:700;color:#C8102E;padding:11px 14px;text-align:center">K</th>
+              </tr>
+            </thead>
+            <tbody>
+              <sc-for list="{{ boxPitchers }}" as="p" hint-placeholder-count="2">
+                <tr style="border-bottom:1px solid #EFE9DD">
+                  <td style="padding:11px 16px"><span style="font-family:'Archivo';font-weight:600;font-size:14px">{{ p.n }}</span> <span style="font-size:11px;color:#C8102E;font-weight:800">{{ p.dec }}</span></td>
+                  <td style="font-family:'Spline Sans Mono';font-weight:700;font-size:13px;text-align:center">{{ p.ip }}</td>
+                  <td style="font-family:'Spline Sans Mono';font-size:13px;text-align:center;color:#6b6258">{{ p.h }}</td>
+                  <td style="font-family:'Spline Sans Mono';font-size:13px;text-align:center;color:#6b6258">{{ p.r }}</td>
+                  <td style="font-family:'Spline Sans Mono';font-size:13px;text-align:center;color:#6b6258">{{ p.er }}</td>
+                  <td style="font-family:'Spline Sans Mono';font-size:13px;text-align:center;color:#6b6258">{{ p.bb }}</td>
+                  <td style="font-family:'Spline Sans Mono';font-size:13px;text-align:center;color:#17120F;padding-right:14px">{{ p.k }}</td>
+                </tr>
+              </sc-for>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+    </sc-if>
+    <!-- ===== ANOTADOR (stub) ===== -->
+    <sc-if value="{{ isAnotador }}" hint-placeholder-val="{{ true }}">
+    <div data-screen-label="Anotador" style="background:#EFEAE0;min-height:calc(100vh - 64px)">
+      <section style="max-width:640px;margin:0 auto;padding:32px 18px 64px">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px">
+          <span style="width:9px;height:9px;border-radius:50%;background:#C8102E;animation:lmpulse 1.4s infinite"></span>
+          <span style="font-size:11px;letter-spacing:.2em;font-weight:700;color:#C8102E">PANEL DEL ANOTADOR</span>
+        </div>
+        <h1 style="font-family:'Archivo Expanded';font-weight:900;font-size:clamp(26px,5vw,38px);margin:0 0 6px;letter-spacing:-.01em">{{ aAwName }} <span style="color:#9A9387;font-weight:700">vs</span> {{ aHmName }}</h1>
+        <p style="font-size:13px;color:#6b6258;margin:0 0 22px">Anota en tu hoja durante el juego. Captura el marcador en vivo y publica todos los detalles al terminar.</p>
+
+        <!-- TABS -->
+        <div style="display:flex;background:#fff;border:1px solid #E3DCCF;border-radius:8px 8px 0 0;overflow:hidden">
+          <button onClick="{{ setTabVivo }}" style="{{ tabVivoStyle }}">En vivo</button>
+          <button onClick="{{ setTabSubir }}" style="{{ tabSubirStyle }}">Subir resultados</button>
+        </div>
+        <div style="background:#fff;border:1px solid #E3DCCF;border-top:0;border-radius:0 0 8px 8px;padding:22px">
+
+          <!-- ===== EN VIVO TAB ===== -->
+          <sc-if value="{{ isAVivo }}" hint-placeholder-val="{{ true }}">
+          <div>
+            <!-- scoreboard -->
+            <div style="background:#17120F;border-radius:8px;padding:18px;color:#F6F2EA">
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+                <span style="font-size:11px;letter-spacing:.14em;font-weight:700;color:#9a9085">MARCADOR</span>
+                <button onClick="{{ advHalf }}" style="background:#2a2320;color:#F6F2EA;border:0;border-radius:4px;font-family:'Archivo';font-weight:700;font-size:12px;padding:7px 12px;cursor:pointer">{{ aInningLabel }} · Avanzar →</button>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:14px">
+                <div style="display:flex;align-items:center;gap:12px">
+                  <span style="width:32px;height:32px;border-radius:4px;background:{{ aAwColor }};color:#fff;font-family:'Archivo';font-weight:800;font-size:11px;display:grid;place-items:center">{{ aAwAbbr }}</span>
+                  <span style="font-family:'Archivo';font-weight:700;font-size:16px;flex:1">{{ aAwName }}</span>
+                  <button onClick="{{ addRunAwayM }}" style="width:34px;height:34px;border-radius:5px;border:1.5px solid #4a3f38;background:transparent;color:#F6F2EA;font-size:20px;font-weight:700;cursor:pointer;line-height:1">−</button>
+                  <span style="font-family:'Spline Sans Mono';font-weight:700;font-size:30px;width:40px;text-align:center">{{ aScoreAway }}</span>
+                  <button onClick="{{ addRunAwayP }}" style="width:34px;height:34px;border-radius:5px;border:0;background:#C8102E;color:#fff;font-size:20px;font-weight:700;cursor:pointer;line-height:1">+</button>
+                </div>
+                <div style="display:flex;align-items:center;gap:12px">
+                  <span style="width:32px;height:32px;border-radius:4px;background:{{ aHmColor }};color:#fff;font-family:'Archivo';font-weight:800;font-size:11px;display:grid;place-items:center">{{ aHmAbbr }}</span>
+                  <span style="font-family:'Archivo';font-weight:700;font-size:16px;flex:1">{{ aHmName }}</span>
+                  <button onClick="{{ addRunHomeM }}" style="width:34px;height:34px;border-radius:5px;border:1.5px solid #4a3f38;background:transparent;color:#F6F2EA;font-size:20px;font-weight:700;cursor:pointer;line-height:1">−</button>
+                  <span style="font-family:'Spline Sans Mono';font-weight:700;font-size:30px;width:40px;text-align:center">{{ aScoreHome }}</span>
+                  <button onClick="{{ addRunHomeP }}" style="width:34px;height:34px;border-radius:5px;border:0;background:#C8102E;color:#fff;font-size:20px;font-weight:700;cursor:pointer;line-height:1">+</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- side toggle -->
+            <div style="margin-top:22px">
+              <div style="font-size:11px;letter-spacing:.14em;font-weight:700;color:#9A9387;margin-bottom:10px">EQUIPO AL BATE</div>
+              <div style="display:flex;gap:10px">
+                <button onClick="{{ setSideAway }}" style="{{ sideAwayStyle }}">{{ aAwName }}</button>
+                <button onClick="{{ setSideHome }}" style="{{ sideHomeStyle }}">{{ aHmName }}</button>
+              </div>
+            </div>
+
+            <!-- batting order -->
+            <div style="margin-top:22px">
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+                <span style="font-size:11px;letter-spacing:.14em;font-weight:700;color:#9A9387">ORDEN DE BATEO · {{ anotaSideName }}</span>
+                <button onClick="{{ nextBatter }}" style="background:#17120F;color:#F6F2EA;border:0;border-radius:4px;font-family:'Archivo';font-weight:700;font-size:11px;letter-spacing:.04em;padding:7px 12px;cursor:pointer;text-transform:uppercase">Siguiente bateador ↓</button>
+              </div>
+              <div style="border:1px solid #E3DCCF;border-radius:6px;overflow:hidden">
+                <sc-for list="{{ anotaOrder }}" as="p" hint-placeholder-count="9">
+                  <button onClick="{{ p.click }}" style="width:100%;text-align:left;cursor:pointer;border:0;border-bottom:1px solid #EFE9DD;border-left:4px solid {{ p.barColor }};background:{{ p.bg }};color:{{ p.color }};display:flex;align-items:center;gap:12px;padding:11px 14px">
+                    <span style="font-family:'Spline Sans Mono';font-weight:700;font-size:14px;width:18px">{{ p.order }}</span>
+                    <span style="font-family:'Archivo';font-weight:700;font-size:14px;flex:1">{{ p.n }}</span>
+                    <span style="font-size:10px;font-weight:800;letter-spacing:.06em;color:{{ p.subColor }}">{{ p.subTeam }}</span>
+                    <span style="font-size:10px;font-weight:700;width:24px;text-align:right;opacity:.7">{{ p.pos }}</span>
+                  </button>
+                </sc-for>
+              </div>
+              <div style="font-size:11px;color:#9A9387;margin-top:8px">Toca un jugador para marcarlo al bate. El resaltado en rojo es el bateador actual.</div>
+            </div>
+
+            <!-- borrowed player -->
+            <div style="margin-top:22px;background:#FBF7EE;border:1px dashed #D9C7A0;border-radius:6px;padding:16px">
+              <div style="font-size:11px;letter-spacing:.12em;font-weight:700;color:#B07A00;margin-bottom:4px">AGREGAR JUGADOR PRESTADO (FORTUITO)</div>
+              <div style="font-size:11.5px;color:#8a7a55;margin-bottom:12px">Solo jugadores registrados en otro equipo de la Liga Mexica.</div>
+              <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center">
+                <select onChange="{{ onSubTeam }}" value="{{ subTeam }}" style="flex:none;font-family:'Archivo';font-weight:600;font-size:13px;padding:9px 10px;border:1px solid #D9C7A0;border-radius:5px;background:#fff;color:#17120F">
+                  <sc-for list="{{ otherTeams }}" as="t" hint-placeholder-count="6"><option value="{{ t.abbr }}">{{ t.abbr }} · {{ t.name }}</option></sc-for>
+                </select>
+                <select onChange="{{ onSubPos }}" value="{{ subPos }}" style="flex:none;font-family:'Archivo';font-weight:600;font-size:13px;padding:9px 10px;border:1px solid #D9C7A0;border-radius:5px;background:#fff;color:#17120F">
+                  <sc-for list="{{ posOptions }}" as="o" hint-placeholder-count="5"><option value="{{ o }}">{{ o }}</option></sc-for>
+                </select>
+                <input onInput="{{ onSubName }}" value="{{ subName }}" placeholder="Nombre del jugador" style="flex:1;min-width:140px;font-family:'Archivo';font-size:13px;padding:9px 11px;border:1px solid #D9C7A0;border-radius:5px;background:#fff;color:#17120F" />
+                <button onClick="{{ addSub }}" style="flex:none;background:#B07A00;color:#fff;border:0;border-radius:5px;font-family:'Archivo';font-weight:700;font-size:13px;padding:10px 16px;cursor:pointer">Agregar</button>
+              </div>
+            </div>
+          </div>
+          </sc-if>
+
+          <!-- ===== SUBIR TAB ===== -->
+          <sc-if value="{{ isASubir }}" hint-placeholder-val="{{ true }}">
+          <div>
+            <sc-if value="{{ published }}" hint-placeholder-val="{{ false }}">
+              <div style="background:#0E5C2E;color:#fff;border-radius:8px;padding:18px 20px;display:flex;align-items:center;gap:14px;margin-bottom:20px">
+                <span style="font-size:24px">✓</span>
+                <div><div style="font-family:'Archivo';font-weight:800;font-size:15px">Resultado publicado</div><div style="font-size:12px;opacity:.85;margin-top:2px">Ya está visible para todos en la sección Resumen.</div></div>
+              </div>
+            </sc-if>
+
+            <div style="font-size:13px;color:#6b6258;margin-bottom:16px">Captura el marcador por entrada que registraste en tu hoja. Las carreras se suman automáticamente.</div>
+
+            <div style="overflow-x:auto;border:1px solid #E3DCCF;border-radius:6px">
+              <table style="border-collapse:collapse;min-width:520px;width:100%">
+                <thead>
+                  <tr style="background:#17120F;color:#F6F2EA">
+                    <th style="text-align:left;font-size:10px;letter-spacing:.1em;font-weight:700;padding:10px 12px;color:#9a9085">EQUIPO</th>
+                    <th style="font-size:11px;font-weight:700;padding:10px 4px;color:#9a9085;width:38px">1</th>
+                    <th style="font-size:11px;font-weight:700;padding:10px 4px;color:#9a9085;width:38px">2</th>
+                    <th style="font-size:11px;font-weight:700;padding:10px 4px;color:#9a9085;width:38px">3</th>
+                    <th style="font-size:11px;font-weight:700;padding:10px 4px;color:#9a9085;width:38px">4</th>
+                    <th style="font-size:11px;font-weight:700;padding:10px 4px;color:#9a9085;width:38px">5</th>
+                    <th style="font-size:11px;font-weight:700;padding:10px 4px;color:#9a9085;width:38px">6</th>
+                    <th style="font-size:11px;font-weight:700;padding:10px 4px;color:#9a9085;width:38px">7</th>
+                    <th style="font-size:11px;font-weight:700;padding:10px 8px;color:#C8102E;width:42px;border-left:1px solid #2a2320">R</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr style="border-bottom:1px solid #EFE9DD">
+                    <td style="font-family:'Archivo';font-weight:700;font-size:13px;padding:8px 12px">{{ uHeadAbbr }}</td>
+                    <sc-for list="{{ uCellsA }}" as="c" hint-placeholder-count="7"><td style="padding:5px 3px;text-align:center"><input onInput="{{ c.on }}" value="{{ c.value }}" inputmode="numeric" style="width:32px;height:34px;text-align:center;font-family:'Spline Sans Mono';font-size:14px;border:1px solid #E3DCCF;border-radius:4px;background:#FBF9F5;color:#17120F" /></td></sc-for>
+                    <td style="font-family:'Spline Sans Mono';font-weight:700;font-size:18px;text-align:center;border-left:1px solid #E3DCCF">{{ uTotalA }}</td>
+                  </tr>
+                  <tr>
+                    <td style="font-family:'Archivo';font-weight:700;font-size:13px;padding:8px 12px">{{ uHeadAbbr2 }}</td>
+                    <sc-for list="{{ uCellsH }}" as="c" hint-placeholder-count="7"><td style="padding:5px 3px;text-align:center"><input onInput="{{ c.on }}" value="{{ c.value }}" inputmode="numeric" style="width:32px;height:34px;text-align:center;font-family:'Spline Sans Mono';font-size:14px;border:1px solid #E3DCCF;border-radius:4px;background:#FBF9F5;color:#17120F" /></td></sc-for>
+                    <td style="font-family:'Spline Sans Mono';font-weight:700;font-size:18px;text-align:center;border-left:1px solid #E3DCCF">{{ uTotalH }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div style="margin-top:18px;background:#F6F2EA;border:1px solid #E3DCCF;border-radius:6px;padding:14px 16px;font-size:12.5px;color:#6b6258;line-height:1.5">
+              📋 Después del marcador, captura jugada por jugada: bateo (AB · H · CI · BB · K) y pitcheo (IP · H · CL · K) de cada jugador. Al publicar, el box score completo aparece en la plataforma.
+            </div>
+
+            <button onClick="{{ publish }}" style="width:100%;margin-top:18px;background:#C8102E;color:#fff;border:0;border-radius:6px;font-family:'Archivo';font-weight:800;font-size:14px;letter-spacing:.06em;padding:16px;cursor:pointer;text-transform:uppercase">Publicar resultado final</button>
+          </div>
+          </sc-if>
+
+        </div>
+      </section>
+    </div>
+    </sc-if>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer style="background:#17120F;color:#9a9085;border-top:3px solid #C8102E;margin-top:auto">
+    <div style="max-width:1200px;margin:0 auto;padding:34px 20px;display:flex;flex-wrap:wrap;gap:20px;align-items:center;justify-content:space-between">
+      <div style="display:flex;align-items:center;gap:11px">
+        <span style="width:32px;height:32px;border-radius:50%;background:#C8102E;display:grid;place-items:center;font-family:'Archivo Expanded';font-weight:900;font-size:15px;color:#fff">M</span>
+        <span style="font-family:'Archivo Expanded';font-weight:800;font-size:14px;letter-spacing:.04em;color:#F6F2EA">LIGA MEXICA A.C.</span>
+      </div>
+      <span style="font-size:12px;max-width:46ch;line-height:1.5">Béisbol infantil y juvenil al sur de la Ciudad de México · Formación integral a través del deporte.</span>
+    </div>
+  </footer>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:&quot;100%&quot;,&quot;height&quot;:820}}">
+class Component extends DCLogic {
+  state = {
+    screen: 'inicio', selPlayer: 1, liveBatter: 4, selTeam: null, division: 'juv',
+    anotaTab: 'vivo', anotaSide: 'away', anotaBatter: 4,
+    aScore: { away: 5, home: 7 }, aInning: 6, aHalf: 'top',
+    subs: { away: [], home: [] }, subTeam: 'PER', subName: '', subPos: 'CF',
+    uLineA: ['','','','','','',''], uLineH: ['','','','','','',''],
+    published: false,
+  };
+  setTab(t){ this.setState({ anotaTab:t }); }
+  setSide(s){ this.setState({ anotaSide:s, anotaBatter:0 }); }
+  addRun(side, d){ this.setState(st=>{ const v=Math.max(0, st.aScore[side]+d); return { aScore:{...st.aScore,[side]:v} }; }); }
+  advHalf(){ this.setState(st=> st.aHalf==='top' ? { aHalf:'bottom', anotaSide:'home', anotaBatter:0 } : { aHalf:'top', aInning:st.aInning+1, anotaSide:'away', anotaBatter:0 }); }
+  pickBatter(i){ this.setState({ anotaBatter:i }); }
+  nextBatter(){ this.setState(st=>{ const len=(st.anotaSide==='away'?this.live.orderAway:this.live.orderHome).length + st.subs[st.anotaSide].length; return { anotaBatter:(st.anotaBatter+1)%len }; }); }
+  setSubField(f, v){ this.setState({ [f]:v }); }
+  addSub(){ this.setState(st=>{ if(!st.subName.trim()) return {}; const side=st.anotaSide; return { subs:{...st.subs,[side]:[...st.subs[side],{n:st.subName.trim(),pos:st.subPos,team:st.subTeam,sub:true}]}, subName:'' }; }); }
+  setULine(side, i, v){ const val=v.replace(/[^0-9]/g,'').slice(0,2); this.setState(st=>{ const key=side==='a'?'uLineA':'uLineH'; const arr=[...st[key]]; arr[i]=val; return { [key]:arr }; }); }
+  publish(){ this.setState({ published:true }); }
+  tabStyle(active){ return `flex:1;cursor:pointer;border:0;font-family:'Archivo';font-weight:800;font-size:13px;letter-spacing:.06em;text-transform:uppercase;padding:14px 10px;background:${active?'#C8102E':'transparent'};color:${active?'#fff':'#9A9387'};border-bottom:3px solid ${active?'#C8102E':'#E3DCCF'}`; }
+  sideBtnStyle(active){ return `flex:1;cursor:pointer;border:1.5px solid ${active?'#17120F':'#E3DCCF'};border-radius:5px;font-family:'Archivo';font-weight:700;font-size:13px;padding:12px;background:${active?'#17120F':'#fff'};color:${active?'#F6F2EA':'#9A9387'}`; }
+
+  // ----- CLUBS (identidad, compartida entre divisiones) -----
+  clubs = [
+    { abbr:'DIA', name:'Diablos Rojos', city:'Coyoacán',    color:'#C8102E' },
+    { abbr:'GUE', name:'Guerreros',     city:'Tlalpan',     color:'#1F6FB2' },
+    { abbr:'TEC', name:'Tecolotes',     city:'Xochimilco',  color:'#2E7D46' },
+    { abbr:'SUL', name:'Sultanes',      city:'Iztapalapa',  color:'#6A3DA8' },
+    { abbr:'PER', name:'Pericos',       city:'Tláhuac',     color:'#E08A00' },
+    { abbr:'CHA', name:'Charros',       city:'M. Contreras',color:'#0F8C8C' },
+  ];
+  clubMeta(abbr){ return this.clubs.find(c=>c.abbr===abbr); }
+
+  // ----- DIVISIONES -----
+  divisions = [
+    { id:'juv', name:'Juvenil Varonil', short:'Juvenil',  cat:'13-15 años', tag:'VARONIL' },
+    { id:'inf', name:'Infantil Mixto',  short:'Infantil', cat:'8-10 años',  tag:'MIXTO' },
+    { id:'fem', name:'Femenil',         short:'Femenil',  cat:'12-14 años', tag:'FEMENIL' },
+    { id:'mix', name:'Juvenil Mixto',   short:'J. Mixto', cat:'15-17 años', tag:'MIXTO' },
+  ];
+  curDivId(){ return this.state.division || 'juv'; }
+  curDivMeta(){ return this.divisions.find(d=>d.id===this.curDivId()) || this.divisions[0]; }
+
+  // records por división { abbr: {w,l,rf,ra,streak} }
+  divRecords = {
+    juv:{ DIA:{w:13,l:3,rf:142,ra:71,streak:'G5'}, GUE:{w:11,l:5,rf:118,ra:84,streak:'G2'}, TEC:{w:9,l:7,rf:97,ra:90,streak:'P1'}, SUL:{w:7,l:9,rf:88,ra:101,streak:'G1'}, PER:{w:5,l:11,rf:74,ra:118,streak:'P3'}, CHA:{w:3,l:13,rf:61,ra:129,streak:'P4'} },
+    inf:{ TEC:{w:12,l:2,rf:108,ra:55,streak:'G4'}, DIA:{w:10,l:4,rf:96,ra:62,streak:'G1'}, PER:{w:8,l:6,rf:81,ra:70,streak:'P1'}, GUE:{w:6,l:8,rf:69,ra:78,streak:'G2'}, CHA:{w:4,l:10,rf:58,ra:96,streak:'P2'}, SUL:{w:3,l:11,rf:51,ra:102,streak:'P5'} },
+    fem:{ DIA:{w:12,l:2,rf:121,ra:60,streak:'G6'}, SUL:{w:10,l:4,rf:99,ra:71,streak:'G3'}, GUE:{w:8,l:6,rf:84,ra:80,streak:'P1'}, TEC:{w:6,l:8,rf:73,ra:85,streak:'G1'}, CHA:{w:5,l:9,rf:66,ra:94,streak:'P2'}, PER:{w:2,l:12,rf:48,ra:113,streak:'P4'} },
+    mix:{ GUE:{w:11,l:3,rf:112,ra:68,streak:'G2'}, DIA:{w:11,l:3,rf:118,ra:64,streak:'G3'}, CHA:{w:8,l:6,rf:88,ra:79,streak:'G1'}, PER:{w:7,l:7,rf:80,ra:83,streak:'P2'}, TEC:{w:5,l:9,rf:67,ra:97,streak:'P1'}, SUL:{w:4,l:10,rf:59,ra:108,streak:'P3'} },
+  };
+  get teams(){ const r=this.divRecords[this.curDivId()]; return this.clubs.map(c=>({ ...c, ...(r[c.abbr]||{w:0,l:0,rf:0,ra:0,streak:'—'}) })); }
+  T(abbr){ return this.teams.find(t=>t.abbr===abbr); }
+
+  // resumen de partidos EN VIVO ahora (en distintas canchas, simultáneos)
+  liveSummary = {
+    juv:{ away:'GUE', home:'DIA', aR:5, hR:7, inning:6, half:'top', cancha:'Campo Mexica 1', balls:2, strikes:1, outs:1, bases:{first:true,second:false,third:true} },
+    inf:{ away:'PER', home:'TEC', aR:3, hR:4, inning:4, half:'bottom', cancha:'Campo Mexica 2', balls:1, strikes:2, outs:2, bases:{first:false,second:true,third:false} },
+    fem:{ away:'SUL', home:'DIA', aR:2, hR:6, inning:5, half:'top', cancha:'Campo Sur', balls:3, strikes:1, outs:0, bases:{first:true,second:true,third:false} },
+    mix:{ away:'DIA', home:'GUE', aR:4, hR:4, inning:7, half:'bottom', cancha:'Diamante Coyoacán', balls:0, strikes:0, outs:1, bases:{first:false,second:false,third:true} },
+  };
+
+  // ----- LIVE GAME juvenil (orden de bateo completo, hand-authored) -----
+  juvLive = {
+    away:{ abbr:'GUE', runs:5, line:[0,1,0,2,0,2], hits:9, errors:1 },
+    home:{ abbr:'DIA', runs:7, line:[1,0,3,1,0,2], hits:11, errors:0 },
+    inningHalf:'top', inning:6, balls:2, strikes:1, outs:1,
+    cancha:'Campo Mexica 1, Coyoacán',
+    bases:{ first:true, second:false, third:true },
+    pitcher:{ name:'Emiliano Cruz', team:'DIA', ip:'5.1', k:6, bb:2, pitches:84 },
+    orderAway:[
+      {n:'Ángel Domínguez',pos:'CF',avg:'.341',ab:3,h:1,rbi:0},
+      {n:'Bruno Vega',pos:'2B',avg:'.298',ab:3,h:2,rbi:1},
+      {n:'Iker Salas',pos:'SS',avg:'.312',ab:3,h:1,rbi:1},
+      {n:'Mateo Rivas',pos:'1B',avg:'.355',ab:3,h:1,rbi:2},
+      {n:'Diego Núñez',pos:'LF',avg:'.276',ab:2,h:0,rbi:0},
+      {n:'Leo Camacho',pos:'C',avg:'.241',ab:2,h:1,rbi:0},
+      {n:'Saúl Ortega',pos:'3B',avg:'.263',ab:2,h:0,rbi:0},
+      {n:'Tadeo Flores',pos:'RF',avg:'.221',ab:2,h:0,rbi:0},
+      {n:'Pablo Mena',pos:'P',avg:'.150',ab:2,h:0,rbi:0},
+    ],
+    orderHome:[
+      {n:'Santiago Lara',pos:'SS',avg:'.367',ab:3,h:2,rbi:1},
+      {n:'Mateo Rivera',pos:'CF',avg:'.412',ab:3,h:2,rbi:2},
+      {n:'Emilio Castro',pos:'3B',avg:'.331',ab:3,h:1,rbi:1},
+      {n:'Joaquín Reyes',pos:'1B',avg:'.305',ab:3,h:1,rbi:1},
+      {n:'Rodrigo Peña',pos:'C',avg:'.288',ab:3,h:1,rbi:1},
+      {n:'Andrés Mora',pos:'LF',avg:'.271',ab:2,h:1,rbi:0},
+      {n:'Gael Ríos',pos:'2B',avg:'.259',ab:2,h:0,rbi:1},
+      {n:'Hugo Téllez',pos:'RF',avg:'.244',ab:2,h:1,rbi:0},
+      {n:'Emiliano Cruz',pos:'P',avg:'.180',ab:2,h:0,rbi:0},
+    ],
+  };
+  spread(total, cells){ const n=Math.max(1,cells); const a=new Array(n).fill(0); for(let k=0;k<total;k++){ a[(k*3+1)%n]++; } return a; }
+  get live(){
+    const id=this.curDivId();
+    if(id==='juv') return this.juvLive;
+    const s=this.liveSummary[id];
+    const awCells=s.inning, hmCells=(s.half==='top')?Math.max(1,s.inning-1):s.inning;
+    const ord=(abbr)=> this.buildRoster(abbr).slice(0,9).map(p=>({ n:p.n, pos:p.pos, avg:p.avg, ab:Math.min(3,p.ab)||3, h:Math.min(2,p.h), rbi:Math.min(2,p.rbi) }));
+    const hp=this.buildRoster(s.home).find(p=>p.pos==='P') || {n:'Lanzador'};
+    return {
+      away:{ abbr:s.away, runs:s.aR, line:this.spread(s.aR,awCells), hits:s.aR+3, errors:1 },
+      home:{ abbr:s.home, runs:s.hR, line:this.spread(s.hR,hmCells), hits:s.hR+4, errors:0 },
+      inningHalf:s.half, inning:s.inning, balls:s.balls, strikes:s.strikes, outs:s.outs,
+      cancha:s.cancha, bases:s.bases,
+      pitcher:{ name:hp.n, team:s.home, ip:'4.2', k:5, bb:2, pitches:71 },
+      orderAway:ord(s.away), orderHome:ord(s.home),
+    };
+  }
+
+  // ----- SCHEDULE por división -----
+  divSchedule = {
+    juv:[
+      { day:'SÁB 21 JUN', games:[
+        {away:'TEC',home:'SUL',aR:8,hR:3,status:'final',time:'10:00',cancha:'Campo Mexica 1'},
+        {away:'PER',home:'CHA',aR:6,hR:5,status:'final',time:'12:30',cancha:'Campo Mexica 2'},
+        {away:'GUE',home:'DIA',aR:4,hR:9,status:'final',time:'16:00',cancha:'Campo Mexica 1'},
+      ]},
+      { day:'DOM 22 JUN', games:[
+        {away:'SUL',home:'DIA',aR:2,hR:7,status:'final',time:'10:00',cancha:'Campo Sur'},
+        {away:'CHA',home:'TEC',aR:1,hR:4,status:'final',time:'12:30',cancha:'Campo Mexica 2'},
+      ]},
+      { day:'HOY · MIÉ 26 JUN', games:[
+        {away:'GUE',home:'DIA',aR:5,hR:7,status:'live',time:'16:00',cancha:'Campo Mexica 1'},
+        {away:'PER',home:'SUL',aR:null,hR:null,status:'upcoming',time:'18:30',cancha:'Campo Mexica 1'},
+      ]},
+      { day:'SÁB 28 JUN', games:[
+        {away:'DIA',home:'TEC',aR:null,hR:null,status:'upcoming',time:'10:00',cancha:'Campo Mexica 1'},
+        {away:'CHA',home:'GUE',aR:null,hR:null,status:'upcoming',time:'12:30',cancha:'Campo Mexica 2'},
+        {away:'SUL',home:'PER',aR:null,hR:null,status:'upcoming',time:'16:00',cancha:'Campo Sur'},
+      ]},
+    ],
+    inf:[
+      { day:'SÁB 21 JUN', games:[
+        {away:'DIA',home:'TEC',aR:2,hR:5,status:'final',time:'09:00',cancha:'Campo Mexica 2'},
+        {away:'GUE',home:'PER',aR:3,hR:7,status:'final',time:'11:00',cancha:'Campo Sur'},
+      ]},
+      { day:'HOY · MIÉ 26 JUN', games:[
+        {away:'PER',home:'TEC',aR:3,hR:4,status:'live',time:'16:00',cancha:'Campo Mexica 2'},
+        {away:'DIA',home:'CHA',aR:null,hR:null,status:'upcoming',time:'18:00',cancha:'Campo Mexica 2'},
+      ]},
+      { day:'DOM 29 JUN', games:[
+        {away:'TEC',home:'DIA',aR:null,hR:null,status:'upcoming',time:'09:00',cancha:'Campo Mexica 2'},
+        {away:'SUL',home:'GUE',aR:null,hR:null,status:'upcoming',time:'11:00',cancha:'Campo Sur'},
+      ]},
+    ],
+    fem:[
+      { day:'SÁB 21 JUN', games:[
+        {away:'GUE',home:'DIA',aR:1,hR:8,status:'final',time:'10:00',cancha:'Campo Sur'},
+        {away:'CHA',home:'SUL',aR:4,hR:6,status:'final',time:'12:30',cancha:'Campo Mexica 1'},
+      ]},
+      { day:'HOY · MIÉ 26 JUN', games:[
+        {away:'SUL',home:'DIA',aR:2,hR:6,status:'live',time:'16:00',cancha:'Campo Sur'},
+        {away:'TEC',home:'GUE',aR:null,hR:null,status:'upcoming',time:'18:30',cancha:'Campo Sur'},
+      ]},
+      { day:'SÁB 28 JUN', games:[
+        {away:'DIA',home:'SUL',aR:null,hR:null,status:'upcoming',time:'10:00',cancha:'Campo Sur'},
+        {away:'PER',home:'CHA',aR:null,hR:null,status:'upcoming',time:'12:30',cancha:'Campo Mexica 2'},
+      ]},
+    ],
+    mix:[
+      { day:'SÁB 21 JUN', games:[
+        {away:'DIA',home:'GUE',aR:5,hR:6,status:'final',time:'13:00',cancha:'Diamante Coyoacán'},
+        {away:'TEC',home:'CHA',aR:3,hR:9,status:'final',time:'15:00',cancha:'Campo Sur'},
+      ]},
+      { day:'HOY · MIÉ 26 JUN', games:[
+        {away:'DIA',home:'GUE',aR:4,hR:4,status:'live',time:'16:30',cancha:'Diamante Coyoacán'},
+        {away:'PER',home:'TEC',aR:null,hR:null,status:'upcoming',time:'19:00',cancha:'Diamante Coyoacán'},
+      ]},
+      { day:'DOM 29 JUN', games:[
+        {away:'GUE',home:'DIA',aR:null,hR:null,status:'upcoming',time:'13:00',cancha:'Diamante Coyoacán'},
+        {away:'CHA',home:'PER',aR:null,hR:null,status:'upcoming',time:'15:00',cancha:'Campo Sur'},
+      ]},
+    ],
+  };
+  get schedule(){ return this.divSchedule[this.curDivId()]; }
+
+  buildBox(divId){
+    const sch=this.divSchedule[divId]; let g=null, day='';
+    for(const d of sch){ for(const x of d.games){ if(x.status==='final'){ g=x; day=d.day; } } }
+    if(!g){ g=sch[0].games[0]; day=sch[0].day; }
+    const home=this.clubMeta(g.home), away=this.clubMeta(g.away);
+    const bh=this.buildRoster(g.home).slice(0,9).map((p,i)=>{ const ab=4, h=Math.max(0,Math.round(4*parseFloat('0'+p.avg))); return {n:p.n,pos:p.pos,ab,r:i<3?1:0,h,rbi:Math.min(2,Math.round(h*0.5)),bb:i%4===0?1:0,k:i%3===0?1:0,avg:p.avg}; });
+    const ph=this.buildRoster(g.home).filter(p=>p.pos==='P').slice(0,2).map((p,i)=>({n:p.n,dec:i===0?'G':'',ip:i===0?'6.0':'1.0',h:i===0?6:2,r:i===0?3:1,er:i===0?2:1,bb:i===0?2:0,k:i===0?7:1}));
+    return { away:{abbr:away.abbr,runs:g.aR,line:this.spread(g.aR,7),hits:g.aR+3,errors:1},
+             home:{abbr:home.abbr,runs:g.hR,line:this.spread(g.hR,7),hits:g.hR+4,errors:0},
+             date:day.replace('HOY · ','')+' 2026 · '+g.time, venue:(g.cancha||'Campo Mexica')+', CDMX', battersHome:bh, pitchersHome:ph };
+  }
+  get box(){ return this.curDivId()==='juv' ? this.juvBox : this.buildBox(this.curDivId()); }
+
+  // ----- BOX SCORE juvenil (hand-authored) -----
+  juvBox = {
+    away:{ abbr:'GUE', runs:4, line:[1,0,0,2,0,1,0], hits:8, errors:2 },
+    home:{ abbr:'DIA', runs:9, line:[2,0,3,0,1,3,'x'], hits:13, errors:0 },
+    date:'SÁB 21 JUN 2026 · 16:00', venue:'Campo Mexica 1, Coyoacán',
+    battersHome:[
+      {n:'Santiago Lara',pos:'SS',ab:4,r:2,h:2,rbi:1,bb:1,k:0,avg:'.367'},
+      {n:'Mateo Rivera',pos:'CF',ab:4,r:2,h:3,rbi:3,bb:1,k:0,avg:'.412'},
+      {n:'Emilio Castro',pos:'3B',ab:5,r:1,h:2,rbi:1,bb:0,k:1,avg:'.331'},
+      {n:'Joaquín Reyes',pos:'1B',ab:4,r:1,h:2,rbi:2,bb:1,k:1,avg:'.305'},
+      {n:'Rodrigo Peña',pos:'C',ab:4,r:1,h:1,rbi:1,bb:0,k:1,avg:'.288'},
+      {n:'Andrés Mora',pos:'LF',ab:4,r:1,h:1,rbi:0,bb:0,k:2,avg:'.271'},
+      {n:'Gael Ríos',pos:'2B',ab:3,r:1,h:1,rbi:1,bb:1,k:0,avg:'.259'},
+      {n:'Hugo Téllez',pos:'RF',ab:4,r:0,h:1,rbi:0,bb:0,k:1,avg:'.244'},
+      {n:'Emiliano Cruz',pos:'P',ab:3,r:0,h:0,rbi:0,bb:0,k:2,avg:'.180'},
+    ],
+    pitchersHome:[
+      {n:'Emiliano Cruz',dec:'G',ip:'6.0',h:6,r:3,er:2,bb:2,k:8},
+      {n:'Pablo Mena',dec:'',ip:'1.0',h:2,r:1,er:1,bb:0,k:1},
+    ],
+  };
+
+  // ----- FEATURED PLAYER -----
+  player = {
+    name:'Mateo Rivera', num:24, pos:'Jardín Central', team:'DIA', bat:'Derecho', age:13,
+    line:{ avg:'.412', hr:6, rbi:24, sb:11, obp:'.488', ops:'1.041' },
+    log:[
+      {date:'21 JUN',opp:'vs GUE',ab:4,h:3,hr:1,rbi:3},
+      {date:'22 JUN',opp:'vs SUL',ab:4,h:2,hr:0,rbi:1},
+      {date:'15 JUN',opp:'@ TEC',ab:3,h:1,hr:0,rbi:0},
+      {date:'14 JUN',opp:'vs CHA',ab:4,h:2,hr:1,rbi:2},
+      {date:'08 JUN',opp:'@ PER',ab:5,h:3,hr:1,rbi:4},
+    ],
+  };
+
+  roster = [
+    { num:7,  n:'Santiago Lara',  pos:'SS', gp:16, ab:62, h:23, hr:2, rbi:14, avg:'.371', obp:'.430' },
+    { num:24, n:'Mateo Rivera',   pos:'CF', gp:16, ab:68, h:28, hr:6, rbi:24, avg:'.412', obp:'.488' },
+    { num:5,  n:'Emilio Castro',  pos:'3B', gp:16, ab:66, h:22, hr:3, rbi:18, avg:'.333', obp:'.389' },
+    { num:33, n:'Joaquín Reyes',  pos:'1B', gp:15, ab:59, h:18, hr:4, rbi:20, avg:'.305', obp:'.371' },
+    { num:12, n:'Rodrigo Peña',   pos:'C',  gp:16, ab:57, h:16, hr:1, rbi:11, avg:'.281', obp:'.344' },
+    { num:9,  n:'Andrés Mora',    pos:'LF', gp:14, ab:51, h:14, hr:2, rbi:9,  avg:'.275', obp:'.333' },
+    { num:4,  n:'Gael Ríos',      pos:'2B', gp:15, ab:54, h:14, hr:0, rbi:8,  avg:'.259', obp:'.328' },
+    { num:18, n:'Hugo Téllez',    pos:'RF', gp:13, ab:45, h:11, hr:1, rbi:7,  avg:'.244', obp:'.300' },
+    { num:21, n:'Emiliano Cruz',  pos:'P',  gp:9,  ab:20, h:4,  hr:0, rbi:2,  avg:'.200', obp:'.261' },
+    { num:30, n:'Iván Salgado',   pos:'P',  gp:8,  ab:14, h:3,  hr:0, rbi:1,  avg:'.214', obp:'.250' },
+  ];
+
+  posOrder = ['CF','SS','3B','1B','C','LF','2B','RF','P'];
+  namePools = {
+    DIA:['Santiago Lara','Mateo Rivera','Emilio Castro','Joaquín Reyes','Rodrigo Peña','Andrés Mora','Gael Ríos','Hugo Téllez','Emiliano Cruz'],
+    GUE:['Bruno Vega','Iker Salas','Ángel Domínguez','Mateo Rivas','Diego Núñez','Leo Camacho','Saúl Ortega','Tadeo Flores','Pablo Mena'],
+    TEC:['Marco Aguilar','Cristian Bravo','Yael Méndez','Damián Rojas','Sergio Lozano','Nicolás Vela','Adrián Cano','Fernando Gil','Óscar Prieto'],
+    SUL:['Raúl Esparza','Kevin Soto','Bruno Cárdenas','Aldo Ramírez','Jonás Beltrán','Iker Fuentes','Mauro Lira','Pedro Gallardo','Ángel Tovar'],
+    PER:['Lucas Medina','Tomás Vargas','Iván Quezada','Beto Sandoval','Carlos Murillo','Diego Pacheco','Rafa Solís','Memo Aragón','Néstor Ibarra'],
+    CHA:['Samuel Ávila','Hugo Barrera','Renato Cruz','Ulises Mata','Gerardo Pinto','Axel Romo','Bruno Salcedo','Iván Vela','Mario Zúñiga'],
+  };
+  buildRoster(abbr){
+    if(abbr==='DIA' && this.curDivId()==='juv') return this.roster;
+    const t=this.T(abbr); const names=this.namePools[abbr]||[];
+    const fmt=x=>x.toFixed(3).replace(/^0/,'');
+    const leaderAvg=Math.max(.250,Math.min(.420,.300+(t.rf-90)*0.0009));
+    const nums=[24,7,5,33,12,9,4,18,21];
+    return names.map((n,i)=>{
+      const pos=this.posOrder[i];
+      const avgNum=Math.max(.150, leaderAvg - i*0.018);
+      const gp=14+(i%3);
+      const ab=Math.max(12, (68-i*2) - (pos==='P'?42:0));
+      const h=Math.round(ab*avgNum);
+      const hr=Math.max(0, Math.round((t.rf/115)*(5-i*0.6)));
+      const rbi=Math.max(0, Math.round(h*0.42 + hr*2));
+      return { num:nums[i]||(i+2), n, pos, gp, ab, h, hr, rbi, avg:fmt(avgNum), obp:fmt(Math.min(.500,avgNum+0.06)) };
+    });
+  }
+
+  go(s){ this.setState(s==='equipos' ? { screen:s, selTeam:null } : { screen:s }); try{window.scrollTo(0,0);}catch(e){} }
+  selPlayer(i){ this.setState({ selPlayer:i }); }
+  openTeam(abbr){ this.setState({ screen:'equipos', selTeam:abbr, selPlayer:0 }); try{window.scrollTo(0,0);}catch(e){} }
+  backToTeams(){ this.setState({ selTeam:null }); try{window.scrollTo(0,0);}catch(e){} }
+  setDivision(id){ this.setState({ division:id, selTeam:null, selPlayer:0 }); }
+
+  renderVals(){
+    const fmtPct = (w,l)=>{ const p=w/(w+l||1); return p.toFixed(3).replace(/^0/,''); };
+    const sorted = [...this.teams].sort((a,b)=> (b.w/(b.w+b.l)) - (a.w/(a.w+a.l)));
+    const leader = sorted[0];
+    const standings = sorted.map((t,i)=>({
+      rank:i+1, abbr:t.abbr, name:t.name, city:t.city, color:t.color, record:`${t.w}-${t.l}`, pct:fmtPct(t.w,t.l),
+      gp:t.w+t.l, w:t.w, l:t.l, rf:t.rf, ra:t.ra, dif:(t.rf-t.ra>0?'+':'')+(t.rf-t.ra), streak:t.streak,
+      gb: i===0 ? '—' : (((leader.w - t.w) + (t.l - leader.l))/2).toFixed(1),
+      streakColor: t.streak[0]==='G' ? '#2E7D46' : '#C8102E',
+      rowBg: i%2===0 ? '#fff' : '#FBF9F5',
+      rankColor: i<2 ? '#C8102E' : '#9A9387',
+      open: ()=>this.openTeam(t.abbr),
+    }));
+    const liveMini = [
+      { ...this.live.away, name:this.T(this.live.away.abbr).name, color:this.T(this.live.away.abbr).color },
+      { ...this.live.home, name:this.T(this.live.home.abbr).name, color:this.T(this.live.home.abbr).color },
+    ];
+    // --- DIVISIONES ---
+    const curDivId = this.curDivId();
+    const curDivMeta = this.curDivMeta();
+    const divPills = this.divisions.map(d=>{
+      const active = d.id===curDivId;
+      return { id:d.id, short:d.short, name:d.name, cat:d.cat, tag:d.tag, active,
+        click:()=>this.setDivision(d.id),
+        style:`flex:none;cursor:pointer;border:1.5px solid ${active?'#C8102E':'#E3DCCF'};background:${active?'#C8102E':'#fff'};color:${active?'#fff':'#6b6258'};border-radius:999px;font-family:'Archivo';font-weight:700;font-size:12.5px;padding:7px 15px;display:flex;align-items:center;gap:8px;white-space:nowrap`,
+        dotColor: active?'#fff':'#C8102E',
+      };
+    });
+    // partido en vivo de OTRAS divisiones (simultáneos, otras canchas)
+    const otherLive = this.divisions.filter(d=>d.id!==curDivId).map(d=>{
+      const s=this.liveSummary[d.id]; const a=this.clubMeta(s.away), h=this.clubMeta(s.home);
+      return { divName:d.name, divTag:d.tag, cancha:s.cancha,
+        awAbbr:a.abbr, awColor:a.color, awRuns:s.aR, hmAbbr:h.abbr, hmColor:h.color, hmRuns:s.hR,
+        inning:(s.half==='top'?'▲ ':'▼ ')+s.inning+'ª',
+        click:()=>{ this.setDivision(d.id); this.go('vivo'); } };
+    });
+    // partido SIGUIENTE de la división activa
+    let ng=null, ngDay='';
+    for(const d of this.schedule){ for(const g of d.games){ if(g.status==='upcoming' && !ng){ ng=g; ngDay=d.day; } } }
+    const nextGame = ng ? (()=>{ const a=this.T(ng.away), h=this.T(ng.home); return {
+      day:ngDay.replace('HOY · ',''), time:ng.time, cancha:ng.cancha||'Por confirmar',
+      awAbbr:a.abbr, awName:a.name, awColor:a.color, awRec:`${a.w}-${a.l}`,
+      hmAbbr:h.abbr, hmName:h.name, hmColor:h.color, hmRec:`${h.w}-${h.l}`,
+      open:()=>this.go('calendario') }; })() : null;
+    const lv0 = this.live;
+    const miniInning = (lv0.inningHalf==='top'?'▲ ':'▼ ')+lv0.inning+'ª';
+    const miniCount = `${lv0.balls}-${lv0.strikes} cuenta · ${lv0.outs} out`;
+    const miniCancha = lv0.cancha;
+    // recent finished results
+    const recent = [];
+    this.schedule.forEach(d=> d.games.forEach(g=>{ if(g.status==='final') recent.push({...g, date:d.day}); }));
+    const recentResults = recent.slice(0,4).map(g=>{
+      const aw=this.T(g.away), hm=this.T(g.home); const awWin=g.aR>g.hR;
+      return { date:g.date, away:aw.name, home:hm.name, awRuns:g.aR, hmRuns:g.hR,
+        awWeight: awWin?800:500, hmWeight: awWin?500:800,
+        awColor: awWin?'#17120F':'#9A9387', hmColor: awWin?'#9A9387':'#17120F',
+        open:()=>this.go('resumen') };
+    });
+
+    const navDef = [
+      {label:'Inicio', s:'inicio'}, {label:'En vivo', s:'vivo'}, {label:'Calendario', s:'calendario'},
+      {label:'Posiciones', s:'posiciones'}, {label:'Equipos', s:'equipos'}, {label:'Resumen', s:'resumen'},
+    ];
+    const navItems = navDef.map(n=>({
+      label:n.label, go:()=>this.go(n.s),
+      style:`flex:none;background:none;border:0;cursor:pointer;font-family:'Archivo';font-weight:${this.state.screen===n.s?'800':'600'};font-size:13px;letter-spacing:.04em;padding:9px 12px;color:${this.state.screen===n.s?'#fff':'#9a9085'};border-bottom:2px solid ${this.state.screen===n.s?'#C8102E':'transparent'};white-space:nowrap`,
+    }));
+
+    // ---------- EN VIVO ----------
+    const L = this.live;
+    const battingSide = L.inningHalf==='top' ? 'away' : 'home';
+    const aw = this.T(L.away.abbr), hm = this.T(L.home.abbr);
+    const pad9 = (arr)=>{ const c=arr.map(String); while(c.length<9) c.push(''); return c; };
+    const vivoTeams = [
+      { abbr:aw.abbr, name:aw.name, color:aw.color, runs:L.away.runs, hits:L.away.hits, errors:L.away.errors,
+        cells:pad9(L.away.line), runColor: battingSide==='away'?'#fff':'#7c736a',
+        batIndicatorLabel: battingSide==='away'?'● AL BATE':`${aw.w}-${aw.l}` },
+      { abbr:hm.abbr, name:hm.name, color:hm.color, runs:L.home.runs, hits:L.home.hits, errors:L.home.errors,
+        cells:pad9(L.home.line), runColor: battingSide==='home'?'#fff':'#7c736a',
+        batIndicatorLabel: battingSide==='home'?'● AL BATE':`${hm.w}-${hm.l}` },
+    ];
+    const onCol = '#C8102E', offCol = '#F6F2EA';
+    const dots = (n,total)=> Array.from({length:total},(_,i)=> i<n?onCol:offCol);
+    const order = battingSide==='away' ? L.orderAway : L.orderHome;
+    const idx = this.state.liveBatter % order.length;
+    const cb = order[idx];
+    const battingTeam = battingSide==='away'?aw:hm;
+    const mkOrder = (list, isBatting)=> list.map((p,i)=>({
+      order:i+1, n:p.n, pos:p.pos, avg:p.avg,
+      weight: (isBatting && i===idx) ? 800 : 500,
+      bg: (isBatting && i===idx) ? '#FBEAEC' : 'transparent',
+    }));
+
+    const posNames = {CF:'Jardín Central',LF:'Jardín Izquierdo',RF:'Jardín Derecho','1B':'Primera Base','2B':'Segunda Base','3B':'Tercera Base',SS:'Campo Corto',C:'Cátcher',P:'Pitcher'};
+    const curBatter = { num: 10+idx, n:cb.n, posLabel: posNames[cb.pos]||cb.pos };
+    const curBatterStats = [
+      {label:'AVG', value:cb.avg}, {label:'AB', value:cb.ab}, {label:'H', value:cb.h}, {label:'RBI', value:cb.rbi},
+    ];
+    const onDeckName = order[(idx+1)%order.length].n;
+    const pitcherName = L.pitcher.name;
+    const pitcherLine = `${L.pitcher.ip} IP · ${L.pitcher.k} K · ${L.pitcher.bb} BB · ${L.pitcher.pitches} pitcheos`;
+
+    // ---------- CALENDARIO ----------
+    const scheduleDays = this.schedule.map(d=>{
+      const isToday = d.day.indexOf('HOY')===0;
+      return {
+        day:d.day, dayColor: isToday?'#C8102E':'#17120F',
+        games: d.games.map(g=>{
+          const ga=this.T(g.away), gh=this.T(g.home);
+          const fin = g.status==='final', live = g.status==='live';
+          const awWin = fin && g.aR>g.hR, hmWin = fin && g.hR>g.aR;
+          return {
+            awAbbr:ga.abbr, awName:ga.name, awColor:ga.color,
+            hmAbbr:gh.abbr, hmName:gh.name, hmColor:gh.color,
+            aR: g.aR==null?'·':g.aR, hR: g.hR==null?'·':g.hR, time:g.time,
+            statusLabel: live?'EN VIVO':(fin?'FINAL':'PROGRAMADO'),
+            statusColor: live?'#C8102E':(fin?'#17120F':'#9A9387'),
+            statusDot: live?'● ':'',
+            accent: live?'#C8102E':(fin?'#17120F':'#E3DCCF'),
+            awWeight: awWin?800:(fin?500:600), hmWeight: hmWin?800:(fin?500:600),
+            awScoreColor: g.aR==null?'#C8C0B2':(awWin?'#17120F':'#9A9387'),
+            hmScoreColor: g.hR==null?'#C8C0B2':(hmWin?'#17120F':'#9A9387'),
+            open: live?(()=>this.go('vivo')):(fin?(()=>this.go('resumen')):(()=>this.go('vivo'))),
+          };
+        }),
+      };
+    });
+
+    // ---------- EQUIPOS / JUGADOR ----------
+    const posNamesT = {CF:'Jardín Central',LF:'Jardín Izquierdo',RF:'Jardín Derecho','1B':'Primera Base','2B':'Segunda Base','3B':'Tercera Base',SS:'Campo Corto',C:'Cátcher',P:'Pitcher'};
+    const selTeamAbbr = this.state.selTeam;
+    const showTeamGrid = !selTeamAbbr;
+    // grid cards (in standings order)
+    const teamCards = standings.map(s=>({
+      abbr:s.abbr, name:s.name, city:s.city, color:s.color, record:s.record,
+      pct:s.pct, rank:s.rank, dif:s.dif,
+      rankLabel: s.rank+'º',
+      open:()=>this.openTeam(s.abbr),
+    }));
+    // detail (fallback to leader so renderVals never breaks)
+    const stTeam = this.T(selTeamAbbr) || this.T(standings[0].abbr);
+    const curRoster = this.buildRoster(stTeam.abbr);
+    const teamHeader = {
+      abbr:stTeam.abbr, name:stTeam.name, city:stTeam.city, color:stTeam.color, record:`${stTeam.w}-${stTeam.l}`,
+      pct:fmtPct(stTeam.w,stTeam.l), rf:stTeam.rf, ra:stTeam.ra, streak:stTeam.streak,
+      rank: standings.findIndex(s=>s.abbr===stTeam.abbr)+1,
+    };
+    const selIdx = this.state.selPlayer % curRoster.length;
+    const rosterView = curRoster.map((p,i)=>({
+      num:p.num, n:p.n, pos:p.pos, avg:p.avg,
+      sel:i===selIdx, click:()=>this.selPlayer(i),
+      bg: i===selIdx ? '#FBEAEC' : (i%2===0?'#fff':'#FBF9F5'),
+      bar: i===selIdx ? '#C8102E' : 'transparent',
+      weight: i===selIdx ? 800 : 600,
+    }));
+    const sp = curRoster[selIdx];
+    const isStar = sp.n===this.player.name;
+    const selectedPlayer = {
+      num:sp.num, n:sp.n, posLabel:posNamesT[sp.pos]||sp.pos, color:stTeam.color,
+      teamName:stTeam.name, bat: isStar?this.player.bat:'Derecho', age: isStar?this.player.age:13,
+      stats:[
+        {label:'AVG', value:sp.avg}, {label:'HR', value:sp.hr}, {label:'CI', value:sp.rbi},
+        {label:'OBP', value:sp.obp}, {label:'H', value:sp.h}, {label:'JJ', value:sp.gp},
+      ],
+      hasLog:isStar, log:this.player.log,
+    };
+
+    // ---------- RESUMEN / BOX ----------
+    const bx = this.box;
+    const ba = this.T(bx.away.abbr), bh = this.T(bx.home.abbr);
+    const padBox = (arr)=>{ const c=arr.map(String); while(c.length<9) c.push(''); return c; };
+    const boxLine = [
+      { abbr:ba.abbr, name:ba.name, color:ba.color, cells:padBox(bx.away.line), runs:bx.away.runs, hits:bx.away.hits, errors:bx.away.errors, win: bx.away.runs>bx.home.runs?800:500 },
+      { abbr:bh.abbr, name:bh.name, color:bh.color, cells:padBox(bx.home.line), runs:bx.home.runs, hits:bx.home.hits, errors:bx.home.errors, win: bx.home.runs>bx.away.runs?800:500 },
+    ];
+    const awWon = bx.away.runs>bx.home.runs;
+    const boxHeader = {
+      awName:ba.name, awColor:ba.color, awAbbr:ba.abbr, awRuns:bx.away.runs, awWin: awWon?'#fff':'#7c736a',
+      hmName:bh.name, hmColor:bh.color, hmAbbr:bh.abbr, hmRuns:bx.home.runs, hmWin: awWon?'#7c736a':'#fff',
+      date:bx.date, venue:bx.venue,
+    };
+
+    // ---------- ANOTADOR ----------
+    const aSide = this.state.anotaSide;
+    const baseOrder = aSide==='away' ? this.live.orderAway : this.live.orderHome;
+    const sideSubs = this.state.subs[aSide];
+    const fullOrder = [...baseOrder, ...sideSubs];
+    const aBatterIdx = this.state.anotaBatter % (fullOrder.length||1);
+    const anotaOrder = fullOrder.map((p,i)=>({
+      order:i+1, n:p.n, pos:p.pos, sub:!!p.sub, subTeam:p.team||'',
+      cur:i===aBatterIdx, click:()=>this.pickBatter(i),
+      bg: i===aBatterIdx ? '#C8102E' : (p.sub?'#FBF3E6':'#fff'),
+      color: i===aBatterIdx ? '#fff' : '#17120F',
+      subColor: i===aBatterIdx ? 'rgba(255,255,255,.8)' : '#B07A00',
+      barColor: i===aBatterIdx ? '#7A0C1B' : 'transparent',
+    }));
+    const anotaTeamObj = aSide==='away' ? this.T(this.live.away.abbr) : this.T(this.live.home.abbr);
+    const otherTeams = this.teams.map(t=>({ abbr:t.abbr, name:t.name }));
+    const sumLine = (arr)=> arr.reduce((s,v)=> s+(parseInt(v)||0), 0);
+    const uCellsA = this.state.uLineA.map((v,i)=>({ value:v, on:(e)=>this.setULine('a',i,e.target.value) }));
+    const uCellsH = this.state.uLineH.map((v,i)=>({ value:v, on:(e)=>this.setULine('h',i,e.target.value) }));
+
+    return {
+      screen:this.state.screen,
+      scheduleDays, teamHeader, roster:rosterView, selectedPlayer,
+      showTeamGrid, showTeamDetail:!showTeamGrid, teamCards, teamCount:this.teams.length, backToTeams:()=>this.backToTeams(),
+      boxLine, boxHeader, boxInnings:[1,2,3,4,5,6,7,8,9],
+      boxBatters: bx.battersHome, boxPitchers: bx.pitchersHome, boxTeamName: bh.name,
+      // anotador
+      setTabVivo:()=>this.setTab('vivo'), setTabSubir:()=>this.setTab('subir'),
+      isAVivo:this.state.anotaTab==='vivo', isASubir:this.state.anotaTab==='subir',
+      tabVivoStyle: this.tabStyle(this.state.anotaTab==='vivo'),
+      tabSubirStyle: this.tabStyle(this.state.anotaTab==='subir'),
+      aScoreAway:this.state.aScore.away, aScoreHome:this.state.aScore.home,
+      aAwAbbr:this.T(this.live.away.abbr).abbr, aAwName:this.T(this.live.away.abbr).name, aAwColor:this.T(this.live.away.abbr).color,
+      aHmAbbr:this.T(this.live.home.abbr).abbr, aHmName:this.T(this.live.home.abbr).name, aHmColor:this.T(this.live.home.abbr).color,
+      aInningLabel:(this.state.aHalf==='top'?'▲ Alta ':'▼ Baja ')+this.state.aInning+'ª',
+      addRunAwayP:()=>this.addRun('away',1), addRunAwayM:()=>this.addRun('away',-1),
+      addRunHomeP:()=>this.addRun('home',1), addRunHomeM:()=>this.addRun('home',-1),
+      advHalf:()=>this.advHalf(),
+      sideAwayStyle:this.sideBtnStyle(aSide==='away'), sideHomeStyle:this.sideBtnStyle(aSide==='home'),
+      setSideAway:()=>this.setSide('away'), setSideHome:()=>this.setSide('home'),
+      anotaSideName: anotaTeamObj.name, anotaSideColor: anotaTeamObj.color,
+      anotaOrder, nextBatter:()=>this.nextBatter(),
+      subTeam:this.state.subTeam, subName:this.state.subName, subPos:this.state.subPos, otherTeams,
+      onSubTeam:(e)=>this.setSubField('subTeam',e.target.value),
+      onSubName:(e)=>this.setSubField('subName',e.target.value),
+      onSubPos:(e)=>this.setSubField('subPos',e.target.value),
+      addSub:()=>this.addSub(),
+      posOptions:['CF','LF','RF','1B','2B','3B','SS','C','P','BD'],
+      uCellsA, uCellsH, uTotalA:sumLine(this.state.uLineA), uTotalH:sumLine(this.state.uLineH),
+      uHeadAbbr:this.T(this.live.away.abbr).abbr, uHeadAbbr2:this.T(this.live.home.abbr).abbr,
+      published:this.state.published, publish:()=>this.publish(),
+      isInicio:this.state.screen==='inicio', isVivo:this.state.screen==='vivo',
+      isCalendario:this.state.screen==='calendario', isPosiciones:this.state.screen==='posiciones',
+      isEquipos:this.state.screen==='equipos', isResumen:this.state.screen==='resumen',
+      isAnotador:this.state.screen==='anotador',
+      goInicio:()=>this.go('inicio'), goVivo:()=>this.go('vivo'), goCalendario:()=>this.go('calendario'),
+      goPosiciones:()=>this.go('posiciones'), goEquipos:()=>this.go('equipos'), goResumen:()=>this.go('resumen'),
+      goAnotador:()=>this.go('anotador'),
+      navItems, standings, liveMini, recentResults,
+      // divisiones
+      divPills, otherLive, nextGame, curDivName:curDivMeta.name, curDivCat:curDivMeta.cat, curDivTag:curDivMeta.tag,
+      miniInning, miniCount, miniCancha,
+      // en vivo
+      vivoTeams, inningCols:[1,2,3,4,5,6,7,8,9], vivoVenue:(L.cancha||'Campo Mexica')+' · '+curDivMeta.name,
+      vivoInningLabel: (L.inningHalf==='top'?'▲ ':'▼ ')+L.inning+'ª',
+      ballDots:dots(L.balls,3), strikeDots:dots(L.strikes,2), outDots:dots(L.outs,2),
+      base1Fill: L.bases.first?'#C8102E':'#F6F2EA',
+      base2Fill: L.bases.second?'#C8102E':'#F6F2EA',
+      base3Fill: L.bases.third?'#C8102E':'#F6F2EA',
+      curBatter, curBatterStats, onDeckName, pitcherName, pitcherLine,
+      battingTeamName: battingTeam.name, battingTeamColor: battingTeam.color,
+      awAbbr:aw.abbr, awName:aw.name, awColor:aw.color,
+      hmAbbr:hm.abbr, hmName:hm.name, hmColor:hm.color,
+      orderAway: mkOrder(L.orderAway, battingSide==='away'),
+      orderHome: mkOrder(L.orderHome, battingSide==='home'),
+    };
+  }
+}
+</script>
+</body>
+</html>
