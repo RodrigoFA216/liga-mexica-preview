@@ -879,6 +879,13 @@
     </div>
     </sc-if>
 
+    <!-- ===== MANUAL (documento técnico) ===== -->
+    <sc-if value="{{ isManual }}" hint-placeholder-val="{{ true }}">
+    <div>
+      <iframe src="manual.html" title="Manual técnico — Cómo está construida la plataforma" loading="lazy" style="width:100%;height:calc(100vh - 116px);border:0;display:block;background:#F1ECE1"></iframe>
+    </div>
+    </sc-if>
+
   </main>
 
   <!-- FOOTER -->
@@ -1228,6 +1235,7 @@ class Component extends DCLogic {
     const navDef = [
       {label:'Inicio', s:'inicio'}, {label:'En vivo', s:'vivo'}, {label:'Calendario', s:'calendario'},
       {label:'Posiciones', s:'posiciones'}, {label:'Equipos', s:'equipos'}, {label:'Resumen', s:'resumen'},
+      {label:'Manual', s:'manual'},
     ];
     const navItems = navDef.map(n=>({
       label:n.label, go:()=>this.go(n.s),
@@ -1402,7 +1410,7 @@ class Component extends DCLogic {
       isInicio:this.state.screen==='inicio', isVivo:this.state.screen==='vivo',
       isCalendario:this.state.screen==='calendario', isPosiciones:this.state.screen==='posiciones',
       isEquipos:this.state.screen==='equipos', isResumen:this.state.screen==='resumen',
-      isAnotador:this.state.screen==='anotador',
+      isAnotador:this.state.screen==='anotador', isManual:this.state.screen==='manual',
       goInicio:()=>this.go('inicio'), goVivo:()=>this.go('vivo'), goCalendario:()=>this.go('calendario'),
       goPosiciones:()=>this.go('posiciones'), goEquipos:()=>this.go('equipos'), goResumen:()=>this.go('resumen'),
       goAnotador:()=>this.go('anotador'),
